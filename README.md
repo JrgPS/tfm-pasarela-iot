@@ -2,7 +2,9 @@
 
 Proyecto del Máster en Desarrollo con IA E.1. Recibe dispositivos mediante conexiones TCP persistentes con TLS, valida su identidad mediante HMAC y PostgreSQL, ejecuta sumas exactas y consulta totales. Incluye un simulador de dispositivos y configuración de réplicas con Docker Compose.
 
-**Estado: conjunto Docker operativo y recorrido TCP/TLS verificado; todavía no es la entrega final.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
+**Estado: MVP validado localmente y en GitHub Actions, con presentación y guion preparados para la revisión final del autor.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
+
+[Repositorio público](https://github.com/JrgPS/tfm-pasarela-iot) · [Presentación](https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/entrega/Presentacion-TFM.pptx) · [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions)
 
 ## Problema y alcance
 
@@ -54,6 +56,11 @@ Para ejecutarlas, definir `IOT_TEST_CONNECTION` con la cadena de una base de dat
 ## Arranque Docker
 
 Procedimiento validado con contenedores Linux en Docker Desktop:
+
+```bash
+git clone https://github.com/JrgPS/tfm-pasarela-iot.git
+cd tfm-pasarela-iot
+```
 
 ```powershell
 .\scripts\Start-Demo.ps1 -Devices 1000 -Gateways 1 -Registries 1
@@ -142,6 +149,6 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 ## Preparación de la entrega
 
-Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. Pendientes: publicar repositorio, ejecutar CI en GitHub y decidir si se añade una grabación. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
+Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. El repositorio es público y [ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520). Pendientes: revisión final del autor, decidir si se añade una grabación y envío del formulario. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
 
 La documentación y las pruebas deben permitir al alumno comprender y defender las decisiones; véase [Uso de IA](docs/ai-development.md).

@@ -1,0 +1,27 @@
+{
+  "verifiedUtc": "2026-10-15T17:10:18.0154176Z",
+  "repository": "https://github.com/JrgPS/tfm-pasarela-iot",
+  "runUrl": "https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520",
+  "runId": 38774773520,
+  "testedCommit": "f6a9451122a6e46ab2e1975f1facdb69726f794c",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "test",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520/job/116559459225",
+      "started_at": "2026-10-15T17:08:06Z",
+      "completed_at": "2026-10-15T17:08:55Z"
+    },
+    {
+      "name": "docker-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520/job/116559459797",
+      "started_at": "2026-10-15T17:08:06Z",
+      "completed_at": "2026-10-15T17:09:20Z"
+    }
+  ]
+}

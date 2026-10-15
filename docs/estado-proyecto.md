@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Actualizado el 15 de octubre de 2026 tras la validación en Docker Desktop. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. La presentación y el guion están preparados. Faltan publicación en GitHub, comprobación de CI y revisión final del autor.
+Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio es público y la presentación y el guion están preparados. Falta la revisión final del autor y el envío al campus.
 
 ## Implementado
 
@@ -12,7 +12,7 @@ Actualizado el 15 de octubre de 2026 tras la validación en Docker Desktop. El M
 - Actualización transaccional de actividad, reconciliación de conexiones perdidas y drenaje al apagar un gateway.
 - Simulador con inicio sincronizado, reconexión y reintentos, comprobación de totales, métricas JSON/CSV.
 - Scripts de arranque, validación, fallos de réplica, comparación de configuraciones y copia/restauración.
-- Automatización de GitHub Actions preparada; todavía no ejecutada en GitHub.
+- GitHub Actions ejecutado correctamente: trabajo de compilación/pruebas y trabajo de demo Docker con TCP/TLS real.
 
 ## Verificado
 
@@ -45,7 +45,7 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 
 ## Pendientes para la entrega
 
-1. Publicar el repositorio y ejecutar CI. GitHub pide iniciar sesión en el navegador. La instalación desde un clon local limpio ya está verificada.
+1. Revisar los [enlaces de entrega](entrega/README.md). El repositorio está publicado, CI terminó correctamente y el clon público sin credenciales está comprobado.
 2. Revisar con el autor la presentación y el guion ya preparados en [materiales de entrega](entrega/README.md), y grabar el vídeo si se incluye.
 3. Facilitar al evaluador repositorio y presentación accesibles, y enviar el formulario del campus tras la revisión del autor. El perfil actual ofrece ejecución local reproducible.
 

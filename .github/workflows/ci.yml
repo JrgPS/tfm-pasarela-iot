@@ -4,7 +4,7 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:18
@@ -17,8 +17,8 @@ jobs:
           --health-cmd "pg_isready -U iot_tests -d iot_tests"
           --health-interval 5s --health-timeout 5s --health-retries 12
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-dotnet@v6.0.0
         with:
           global-json-file: global.json
       - run: dotnet restore IotGateway.slnx
@@ -26,16 +26,16 @@ jobs:
       - run: dotnet test IotGateway.slnx -c Release --no-build --logger "trx;LogFileName=tests.trx"
         env:
           IOT_TEST_CONNECTION: Host=localhost;Database=iot_tests;Username=iot_tests;Password=ci-only-not-a-production-secret
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: test-results
           path: '**/TestResults/*.trx'
   docker-smoke:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Start isolated fictitious demo
         run: sh scripts/start-demo.sh
         env:
@@ -50,7 +50,7 @@ jobs:
           IOT_NETWORK_TESTS: 'true'
       - name: Simulator and persisted totals
         run: docker compose run --rm --build simulator --host proxy --devices 10 --operations 5 --output results/ci-smoke.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: docker-evidence
