@@ -46,7 +46,7 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 ## Pendientes para la entrega
 
 1. Publicar el repositorio, ejecutar CI y validar instalación desde un clon limpio con secretos recién generados.
-2. Preparar presentación, vídeo de demostración, guía de uso y explicación de decisiones para la defensa.
+2. Revisar con el autor la presentación y el guion ya preparados en [materiales de entrega](entrega/README.md), y grabar el vídeo si se incluye.
 3. Decidir el acceso del evaluador; revisar privilegios de base de datos, límites de autenticación y certificados antes de exposición remota.
 4. Cerrar las versiones de imágenes para el paquete de entrega. Los identificadores de las imágenes usadas en estas pruebas ya están registrados.
 5. Simular explícitamente una caída de la base de datos y comprobar el comportamiento de sobrecarga y la recuperación posterior.
@@ -58,3 +58,7 @@ Mejoras posteriores al mínimo: mezclas configurables de escenarios inválidos e
 Los servicios quedan disponibles únicamente en `localhost:7443`. La API interna y PostgreSQL no publican sus puertos en el host. Los contenedores auxiliares de las pruebas se retiran y no se elimina el volumen de datos.
 
 `.tools/`, `secrets/`, compilaciones, logs y resultados de ejecución están ignorados por Git. Solo se selecciona evidencia sin claves bajo `docs/evidence/`. El PDF original del campus se conserva localmente. No se han contratado servicios, consumido APIs de IA desde la aplicación ni accedido al NAS o Proxmox.
+
+## Cierre técnico adicional
+
+La [caída de PostgreSQL y la sobrecarga controlada](validacion-fallos.md) están verificadas con pruebas coordinadas, recuperación e idempotencia. Los rechazos observados fueron 009 y 013. La configuración habitual se restauró al terminar. El simulador reconoce 013 como rechazo temporal. Presentación y guion disponibles en la carpeta de entrega.

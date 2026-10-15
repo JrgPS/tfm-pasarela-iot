@@ -6,6 +6,8 @@ using System.Text.Json;
 using Iot.Protocol;
 using Iot.Simulator;
 
+if (args.Contains("--fault-probe")) { await FaultProbe.Run(args); return; }
+
 string Option(string name, string fallback)
 {
     var index = Array.IndexOf(args, "--" + name);

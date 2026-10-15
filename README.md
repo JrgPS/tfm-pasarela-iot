@@ -142,6 +142,6 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 ## Preparación de la entrega
 
-Pendientes: revisar el acceso del evaluador y la seguridad antes de exposición remota, publicar repositorio y ejecutar CI en GitHub, preparar presentación y vídeo y comprobar instalación desde un clon limpio. No hay todavía URL pública de despliegue ni enlaces finales de presentación. Los resultados medidos y las mejoras restantes del simulador se detallan en el estado del proyecto.
+Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. Pendientes: publicar repositorio, ejecutar CI en GitHub y decidir si se añade una grabación. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
 
 La documentación y las pruebas deben permitir al alumno comprender y defender las decisiones; véase [Uso de IA](docs/ai-development.md).

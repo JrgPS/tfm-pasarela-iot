@@ -25,7 +25,7 @@ public sealed class DeviceClient(string host, int port, byte[] expectedCertHash,
             {
                 if (tls is null) await ConnectAsync(token);
                 var result = await ExchangeAsync(frame, token);
-                if (result.Code == "009") throw new IOException("Registry unavailable, retry original request.");
+                if (result.Code is "009" or "013") throw new IOException("Service unavailable or at capacity, retry original request.");
                 return result;
             }
             catch (Exception ex) when (attempt < 3 && !token.IsCancellationRequested &&
@@ -51,7 +51,7 @@ public sealed class DeviceClient(string host, int port, byte[] expectedCertHash,
         await tls.AuthenticateAsClientAsync(new SslClientAuthenticationOptions { TargetHost = host }, timeout.Token);
         reader = new FrameReader(tls, TimeSpan.FromSeconds(10));
         var init = await ExchangeAsync(WireProtocol.CreateRequest(device.Identity, "001", "-", key), token);
-        if (init.Code == "009") throw new IOException("Initialization dependency unavailable.");
+        if (init.Code is "009" or "013") throw new IOException("Initialization dependency unavailable or at capacity.");
         if (init.Code != "000") throw new InvalidOperationException($"Initialization denied: {init.Code}");
     }
 
@@ -65,7 +65,7 @@ public sealed class DeviceClient(string host, int port, byte[] expectedCertHash,
         var request = WireProtocol.ParseRequest(frame);
         if (response.Id != request.Id || response.Device != device.Identity || response.Action != request.Action)
             throw new InvalidOperationException("Response correlation mismatch.");
-        if (response.Code == "009" && response.Mac == "-") return response;
+        if (response.Code is "009" or "013" && response.Mac == "-" && response.Merchant == "000000000") return response;
         if (!WireProtocol.Verify(response.Canonical, response.Mac, key))
             throw new InvalidOperationException("Response authentication failed.");
         if (response.Merchant != device.Merchant) throw new InvalidOperationException("Merchant mismatch.");

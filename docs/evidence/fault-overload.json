@@ -1,0 +1,12 @@
+{
+  "utc": "2026-10-15T15:08:49.694982+00:00",
+  "scenario": "overload",
+  "devices": 32,
+  "firstOutcomes": {
+    "009": 2,
+    "013": 30
+  },
+  "recoveredOperations": 32,
+  "replayedOperations": 32,
+  "totalsVerified": true
+}
