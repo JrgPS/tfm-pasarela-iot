@@ -84,4 +84,3 @@ await finalizePresentation({workspaceDir:root,candidatePath:path.join(build,'can
   fontPolicy:{basis:'design',families:['Arial']},verifyArtifactToolImport:true,
   receiptPath:path.join(build,'validation.json')});
 console.log('Presentation exported and package validated.');
-

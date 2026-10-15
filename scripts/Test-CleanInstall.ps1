@@ -11,7 +11,7 @@ $env:PATH=(Split-Path $docker)+[IO.Path]::PathSeparator+$env:PATH
 $oldProject=$env:COMPOSE_PROJECT_NAME
 $oldFiles=$env:COMPOSE_FILE
 $started=$false
-function Docker([string[]]$Arguments) {
+function Run-CleanDocker([string[]]$Arguments) {
     & $docker @Arguments
     if ($LASTEXITCODE -ne 0) { throw "Docker failed: $($Arguments[0])" }
 }
@@ -28,7 +28,7 @@ try {
     $started=$true
     & ./scripts/Start-Demo.ps1 -Devices 10 -Gateways 1 -Registries 1
     Start-Sleep -Seconds 6
-    Docker @('compose','run','--rm','--build','simulator','--host','proxy','--devices','10','--operations','5','--output','results/clean-install.json') | Out-Host
+    Run-CleanDocker @('compose','run','--rm','--build','simulator','--host','proxy','--devices','10','--operations','5','--output','results/clean-install.json') | Out-Host
     $simulation=Get-Content results/clean-install.json -Raw | ConvertFrom-Json
     $fresh=(Get-FileHash secrets/master-key).Hash -ne (Get-FileHash (Join-Path $root 'secrets/master-key')).Hash
     if (!$fresh -or $simulation.failedDevices -ne 0 -or $simulation.confirmedOperations -ne 50) { throw 'Clean installation verification failed.' }
