@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-15T15:18:02.0930541Z",
+  "commit": "cadd88b278b9f197cdc89227bf6ee07ba543d71b",
+  "source": "local Git clone",
+  "composeProject": "iot-clean-625d1d93",
+  "secretsInCloneBeforeSetup": false,
+  "independentMasterKey": true,
+  "newPostgresVolume": true,
+  "simulation": {
+    "utc": "2026-10-15T17:18:01.2004292+02:00",
+    "devices": 10,
+    "operationsPerDevice": 5,
+    "synchronizeStart": false,
+    "devicesReady": 10,
+    "intervalMs": 0,
+    "rampMs": 10,
+    "confirmedOperations": 50,
+    "failedDevices": 0,
+    "reconnections": 0,
+    "retries": 0,
+    "durationSeconds": 1.5077195,
+    "uniqueConfirmedPerSecond": 33.16266719373199,
+    "operationLatencyMs": {
+      "p50": 41.7001,
+      "p95": 63.0374,
+      "p99": 69.4381
+    },
+    "errors": []
+  }
+}

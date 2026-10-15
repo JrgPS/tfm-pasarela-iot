@@ -31,3 +31,33 @@ jobs:
         with:
           name: test-results
           path: '**/TestResults/*.trx'
+  docker-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start isolated fictitious demo
+        run: sh scripts/start-demo.sh
+        env:
+          DEVICES: '10'
+          GATEWAYS: '1'
+          REGISTRIES: '1'
+      - name: Prepare test database
+        run: docker compose exec -T db createdb -U iot iot_tests
+      - name: Protocol, PostgreSQL and real TCP TLS tests
+        run: docker compose run --rm --build tests
+        env:
+          IOT_NETWORK_TESTS: 'true'
+      - name: Simulator and persisted totals
+        run: docker compose run --rm --build simulator --host proxy --devices 10 --operations 5 --output results/ci-smoke.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-evidence
+          path: |
+            results/tests/*.trx
+            results/ci-smoke.json
+            results/ci-smoke.csv
+      - name: Remove disposable CI project
+        if: always()
+        run: docker compose down --volumes

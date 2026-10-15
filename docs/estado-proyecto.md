@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Actualizado el 15 de octubre de 2026 tras la validación en Docker Desktop. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El TFM aún necesita publicación y materiales finales de entrega.
+Actualizado el 15 de octubre de 2026 tras la validación en Docker Desktop. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. La presentación y el guion están preparados. Faltan publicación en GitHub, comprobación de CI y revisión final del autor.
 
 ## Implementado
 
@@ -45,11 +45,11 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 
 ## Pendientes para la entrega
 
-1. Publicar el repositorio, ejecutar CI y validar instalación desde un clon limpio con secretos recién generados.
+1. Publicar el repositorio y ejecutar CI. GitHub pide iniciar sesión en el navegador. La instalación desde un clon local limpio ya está verificada.
 2. Revisar con el autor la presentación y el guion ya preparados en [materiales de entrega](entrega/README.md), y grabar el vídeo si se incluye.
-3. Decidir el acceso del evaluador; revisar privilegios de base de datos, límites de autenticación y certificados antes de exposición remota.
-4. Cerrar las versiones de imágenes para el paquete de entrega. Los identificadores de las imágenes usadas en estas pruebas ya están registrados.
-5. Simular explícitamente una caída de la base de datos y comprobar el comportamiento de sobrecarga y la recuperación posterior.
+3. Facilitar al evaluador repositorio y presentación accesibles, y enviar el formulario del campus tras la revisión del autor. El perfil actual ofrece ejecución local reproducible.
+
+Si se decide añadir un despliegue remoto, revisar antes privilegios de base de datos, límites de autenticación y certificados. Las etiquetas de imágenes son mutables y conviene fijar digests para conservación a largo plazo. Las imágenes usadas en los ensayos y en el cierre están identificadas en los metadatos, sin afirmar que una descarga futura producirá exactamente los mismos binarios.
 
 Mejoras posteriores al mínimo: mezclas configurables de escenarios inválidos en el simulador, métricas de todas las acciones, escalado por calendario y un journal duradero para auditoría durante averías. En rechazos de transporte la auditoría conserva la causa; no se garantiza todavía una muestra de los bytes rechazados ni reenvío de toda auditoría tras caída de PostgreSQL.
 
@@ -62,3 +62,5 @@ Los servicios quedan disponibles únicamente en `localhost:7443`. La API interna
 ## Cierre técnico adicional
 
 La [caída de PostgreSQL y la sobrecarga controlada](validacion-fallos.md) están verificadas con pruebas coordinadas, recuperación e idempotencia. Los rechazos observados fueron 009 y 013. La configuración habitual se restauró al terminar. El simulador reconoce 013 como rechazo temporal. Presentación y guion disponibles en la carpeta de entrega.
+
+La [instalación limpia](evidence/clean-install.json) clonó el commit `cadd88b`, generó secretos nuevos y una base independiente, y confirmó 50 operaciones de diez dispositivos sin fallos. Se retiraron únicamente los contenedores y el volumen de ese proyecto temporal. El código de aplicación no ha cambiado desde ese commit. El [resumen de regresión](evidence/regression-tests.json) registra 29 pruebas aprobadas sin omisiones. Los [metadatos del cierre](evidence/environment-release.json) conservan las huellas del código actual.

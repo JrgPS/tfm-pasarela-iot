@@ -1,0 +1,8 @@
+{
+  "source": "results/tests/docker-tests.trx",
+  "total": 29,
+  "passed": 29,
+  "failed": 0,
+  "notExecuted": 0,
+  "finished": "2026-10-15T15:11:27.0523504+00:00"
+}

@@ -10,6 +10,7 @@ Proyecto: **Pasarela IoT TCP escalable**, Máster en Desarrollo con IA E.1.
 - [Especificación](../../Doc/Especificacion-TFM-Pasarela-IoT.md): requisitos completos.
 - [Validación Docker](../validacion-docker.md) y [fallos de dependencia y sobrecarga](../validacion-fallos.md): resultados con evidencia.
 - [Uso de IA](../ai-development.md): explicación del proceso asistido.
+- [Instalación limpia verificada](../evidence/clean-install.json): clon local sin secretos, base nueva y 50 operaciones correctas de diez dispositivos.
 
 ## Datos para el formulario
 
@@ -33,6 +34,8 @@ Texto sugerido para describir la publicación local: «Servicio backend TCP/TLS 
 5. Revisar los campos y enviar personalmente el formulario del campus.
 
 El formulario del campus no se ha enviado. No se han inventado enlaces, credenciales de evaluador ni una grabación inexistente.
+
+GitHub Actions está preparado con un trabajo de compilación y pruebas y otro de demo Docker con TCP/TLS real. Todavía no se ha ejecutado en GitHub. La validación local no equivale a un resultado de Actions. El clon limpio comprobado procede del repositorio Git local, no de una descarga pública de GitHub.
 
 ## Fuente editable de la presentación
 
