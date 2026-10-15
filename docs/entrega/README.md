@@ -28,15 +28,21 @@ Texto sugerido para describir la publicación local: «Servicio backend TCP/TLS 
 ## Antes de enviar
 
 1. Comprobar que el repositorio y la presentación son accesibles al evaluador.
-2. Consultar la [ejecución correcta de GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520).
+2. Consultar la [ejecución correcta de GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191).
 3. Revisar la presentación y practicar el guion con el autor.
 4. Incluir la URL del vídeo si se graba y verificar su acceso.
 5. Revisar los campos y enviar personalmente el formulario del campus.
 
 El formulario del campus no se ha enviado. No se han inventado enlaces, credenciales de evaluador ni una grabación inexistente.
 
-Repositorio público en la cuenta del autor y archivos publicados, incluida la presentación. Los dos trabajos de [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520) terminaron correctamente: compilación y pruebas, y demo Docker con TCP/TLS real. La [evidencia de CI](../evidence/github-actions.json) identifica el commit comprobado. El trabajo Docker realiza su propio checkout y genera secretos nuevos en el runner. También se verificó un [clon público sin credenciales](../evidence/public-clone.json). El clon limpio inicial con Docker conserva su informe por separado.
+Repositorio público en la cuenta del autor y archivos publicados, incluida la presentación. Los dos trabajos de [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191) terminaron correctamente: compilación y pruebas, y demo Docker con TCP/TLS real. La [evidencia de CI](../evidence/github-actions.json) identifica el commit comprobado. El trabajo Docker realiza su propio checkout y genera secretos nuevos en el runner. También se verificó un [clon público sin credenciales](../evidence/public-clone.json). El clon limpio inicial con Docker conserva su informe por separado.
 
 ## Fuente editable de la presentación
 
 `scripts/build-presentation.mjs` usa `@oai/artifact-tool` del entorno de documentos. Requiere `ARTIFACT_TOOL_MODULES` con el directorio de módulos, `PRESENTATIONS_SKILL` con la carpeta de la habilidad y `ARTIFACT_PYTHON` con el ejecutable Python. No son requisitos para ejecutar la pasarela. El borrador, los renders y los informes internos de revisión quedan en `tmp/presentation/`, excluido de Git.
+
+## Versión de entrega
+
+La etiqueta `v1.0.0` identifica la versión preparada. El [ZIP de GitHub](https://github.com/JrgPS/tfm-pasarela-iot/archive/refs/tags/v1.0.0.zip) permite descargar sus archivos. La [presentación de esa versión](https://github.com/JrgPS/tfm-pasarela-iot/blob/v1.0.0/docs/entrega/Presentacion-TFM.pptx) ofrece un enlace estable para el formulario.
+
+La ejecución de CI comprobó el commit `f6ef8b9`. Después se actualizaron únicamente enlaces y evidencia documental, sin cambiar código de aplicación ni configuración de CI.

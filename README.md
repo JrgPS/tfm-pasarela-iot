@@ -149,6 +149,6 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 ## Preparación de la entrega
 
-Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. El repositorio es público y [ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38774773520). Pendientes: revisión final del autor, decidir si se añade una grabación y envío del formulario. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
+Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. El repositorio es público y [ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191). Pendientes: revisión final del autor, decidir si se añade una grabación y envío del formulario. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
 
 La documentación y las pruebas deben permitir al alumno comprender y defender las decisiones; véase [Uso de IA](docs/ai-development.md).
