@@ -10,6 +10,7 @@ builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 
 builder.Services.AddSingleton(Settings.DataSource());
 builder.Services.AddSingleton(new DeviceKeyProtector(Convert.FromBase64String(Settings.Secret("master-key"))));
 builder.Services.AddSingleton<RegistryStore>();
+builder.Services.AddHostedService<ConnectionReconciler>();
 var app = builder.Build();
 var apiKey = Encoding.UTF8.GetBytes(Settings.Secret("api-key"));
 app.Use(async (context, next) =>

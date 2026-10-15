@@ -1,0 +1,15 @@
+{
+  "verifiedUtc": "2026-10-15T14:29:20.3221834Z",
+  "method": "pg_dump custom archive followed by pg_restore into a fresh isolated database",
+  "sourceBeforeDump": {
+    "devices": 1005,
+    "operations": 131007,
+    "inconsistentTotals": 0
+  },
+  "restored": {
+    "devices": 1005,
+    "operations": 131007,
+    "inconsistentTotals": 0
+  },
+  "masterKeyRequired": "Encrypted device keys require the original master-key file, backed up separately."
+}

@@ -15,6 +15,8 @@ public sealed class TcpGateway(IHttpClientFactory clients, ILogger<TcpGateway> l
     private readonly ConcurrentDictionary<string, Task> connections = new();
     private readonly string replica = Environment.GetEnvironmentVariable("HOSTNAME") ?? Environment.MachineName;
     private TcpListener? listener;
+    private readonly SemaphoreSlim activeRequests = new(
+        int.Parse(Environment.GetEnvironmentVariable("MAX_ACTIVE_REQUESTS") ?? "128"));
     public bool Ready { get; private set; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -39,12 +41,24 @@ public sealed class TcpGateway(IHttpClientFactory clients, ILogger<TcpGateway> l
             }
         }
         catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) { }
+        catch (SocketException) when (!Ready) { }
+        catch (ObjectDisposedException) when (!Ready) { }
         finally
         {
             Ready = false; listener.Stop();
-            try { await Task.WhenAll(connections.Values).WaitAsync(TimeSpan.FromSeconds(10)); }
-            catch (TimeoutException) { logger.LogWarning("Shutdown timed out waiting for clients"); }
         }
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        // Stop accepting new sockets but let an operation already in flight finish and reply.
+        Ready = false;
+        listener?.Stop();
+        try { await Task.WhenAll(connections.Values).WaitAsync(TimeSpan.FromSeconds(10), cancellationToken); }
+        catch (TimeoutException) { logger.LogInformation("Drain deadline reached; closing idle sessions"); }
+        await base.StopAsync(cancellationToken);
+        try { await Task.WhenAll(connections.Values).WaitAsync(TimeSpan.FromSeconds(7), cancellationToken); }
+        catch (TimeoutException) { logger.LogWarning("Some connection close audits exceeded shutdown deadline"); }
     }
 
     private async Task ServeAsync(TcpClient socket, string id, X509Certificate2 certificate, CancellationToken stoppingToken)
@@ -73,26 +87,36 @@ public sealed class TcpGateway(IHttpClientFactory clients, ILogger<TcpGateway> l
                 opened = true;
                 var frames = new FrameReader(tls);
                 var initialized = false;
-                while (!stoppingToken.IsCancellationRequested)
+                while (Ready && !stoppingToken.IsCancellationRequested)
                 {
                     using var deadline = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
                     deadline.CancelAfter(TimeSpan.FromSeconds(initialized ? 120 : 15));
                     var frame = await frames.ReadAsync(deadline.Token);
                     if (frame is null) break;
                     ProcessResult result;
+                    var acquired = false;
                     try
                     {
+                        acquired = await activeRequests.WaitAsync(TimeSpan.FromSeconds(2), stoppingToken);
+                        if (!acquired)
+                        {
+                            result = new(WireProtocol.Reject(frame, "013"), true);
+                        }
+                        else
+                        {
                         using var response = await client.PostAsJsonAsync("/internal/messages/process",
                             new ProcessMessage(id, replica, Guid.NewGuid().ToString(), frame), stoppingToken);
                         response.EnsureSuccessStatusCode();
                         result = await response.Content.ReadFromJsonAsync<ProcessResult>(stoppingToken) ??
                                  throw new IOException("Empty registry response.");
+                        }
                     }
                     catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
                     {
                         logger.LogWarning("Registry unavailable for connection {Connection}, outcome may be uncertain", id);
                         result = new(WireProtocol.Reject(frame, "009"), true);
                     }
+                    finally { if (acquired) activeRequests.Release(); }
                     if (result.Frame is not null)
                     {
                         var parsed = WireProtocol.ParseResponse(result.Frame);

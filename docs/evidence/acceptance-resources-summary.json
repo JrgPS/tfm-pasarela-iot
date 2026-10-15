@@ -1,0 +1,42 @@
+{
+  "method": "Periodic Docker stats snapshots; maxima refer only to observed samples, not continuous peaks. CPU 100 percent represents one logical CPU.",
+  "firstSampleUtc": "2026-10-15T14:20:19.5958224Z",
+  "lastSampleUtc": "2026-10-15T14:28:51.9562177Z",
+  "containers": {
+    "iot-tfm-db-1": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 164.14,
+      "maximumSampledMemoryMiB": 277.8
+    },
+    "iot-tfm-gateway-1": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 0.69,
+      "maximumSampledMemoryMiB": 103.6
+    },
+    "iot-tfm-gateway-2": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 0.33,
+      "maximumSampledMemoryMiB": 107.4
+    },
+    "iot-tfm-proxy-1": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 2.19,
+      "maximumSampledMemoryMiB": 27.37
+    },
+    "iot-tfm-registry-1": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 0.89,
+      "maximumSampledMemoryMiB": 73.7
+    },
+    "iot-tfm-registry-2": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 0.59,
+      "maximumSampledMemoryMiB": 74.52
+    },
+    "iot-tfm-acceptance-500": {
+      "samples": 52,
+      "maximumSampledCpuPercent": 25.38,
+      "maximumSampledMemoryMiB": 66.83
+    }
+  }
+}

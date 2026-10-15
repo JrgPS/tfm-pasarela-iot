@@ -2,7 +2,7 @@
 
 Proyecto del Máster en Desarrollo con IA E.1. Recibe dispositivos mediante conexiones TCP persistentes con TLS, valida su identidad mediante HMAC y PostgreSQL, ejecuta sumas exactas y consulta totales. Incluye un simulador de dispositivos y configuración de réplicas con Docker Compose.
 
-**Estado: primera implementación; todavía no es la entrega final.** El código se está verificando por fases. Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md).
+**Estado: conjunto Docker operativo y recorrido TCP/TLS verificado; todavía no es la entrega final.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
 
 ## Problema y alcance
 
@@ -47,13 +47,13 @@ En el equipo inicial de Windows se ha descargado un SDK local ignorado por Git. 
 .\scripts\Invoke-Dotnet.ps1 test IotGateway.slnx
 ```
 
-Las tareas `TFM: compilar` y `TFM: pruebas` están preparadas para VS Code. Sin `IOT_TEST_CONNECTION`, xUnit omite explícitamente las pruebas de PostgreSQL; no significa que hayan pasado.
+Las tareas `TFM: compilar` y `TFM: pruebas` están preparadas para VS Code. Sin `IOT_TEST_CONNECTION`, xUnit omite explícitamente las pruebas de PostgreSQL; no significa que hayan pasado. Las pruebas TCP reales requieren además el conjunto Docker en marcha y `IOT_NETWORK_TESTS=true`.
 
 Para ejecutarlas, definir `IOT_TEST_CONNECTION` con la cadena de una base de datos **de pruebas** y repetir `dotnet test`. Las pruebas crean tablas y datos ficticios y no se deben apuntar a una base de datos real del trabajo. La automatización de GitHub configura una base de datos desechable para ello.
 
 ## Arranque Docker
 
-Este es el procedimiento previsto, pendiente de validación en un host Docker:
+Procedimiento validado con contenedores Linux en Docker Desktop:
 
 ```powershell
 .\scripts\Start-Demo.ps1 -Devices 1000 -Gateways 1 -Registries 1
@@ -74,7 +74,7 @@ docker compose run --rm --build simulator --host proxy --devices 1 --operations 
 docker compose run --rm simulator --host proxy --devices 100 --operations 10 --ramp-ms 20
 ```
 
-El simulador conserva una conexión por dispositivo, valida HMAC y correlación, comprueba resultados y contrasta los totales antes/después. Escribe métricas JSON en `results/` y devuelve un código de salida distinto de cero si detecta fallos. Los perfiles avanzados de errores, duración y percentiles por acción todavía no están completos.
+El simulador conserva una conexión por dispositivo, valida HMAC y correlación, comprueba resultados y contrasta los totales antes/después. Escribe métricas JSON y CSV en `results/` y devuelve un código de salida distinto de cero si detecta fallos. `--synchronize-start true` mantiene los dispositivos conectados hasta que todos estén listos para empezar. Los perfiles mixtos de errores y las métricas separadas de todas las acciones todavía no están completos.
 
 Escalado manual:
 
@@ -84,7 +84,17 @@ docker compose ps
 docker compose logs --tail 100 gateway registry proxy
 ```
 
-Este comando no redistribuye conexiones abiertas ni drena las sesiones al reducir réplicas. La configuración dispone de hasta ocho destinos por servicio y depende de la resolución DNS de Docker, todavía por verificar en ejecución.
+Este comando no redistribuye conexiones abiertas. El gateway deja de aceptar conexiones al recibir SIGTERM, permite terminar operaciones y cierra las sesiones tras un plazo de drenaje; los clientes deben reconectar. SIGKILL no permite ese drenaje. Se ha verificado el descubrimiento DNS de las réplicas y el reparto de conexiones en Docker. La configuración admite hasta ocho destinos por servicio.
+
+Validación completa y pruebas de caída:
+
+```powershell
+.\scripts\Test-Docker.ps1
+.\scripts\Test-Docker.ps1 -IncludeAcceptance
+.\scripts\Test-Backup.ps1
+```
+
+La opción de aceptación añade una prueba de unos diez minutos. [Metodología y límites](docs/pruebas-reproducibles.md).
 
 Detener conservando datos:
 
@@ -103,7 +113,7 @@ docker compose down
 - Un éxito se devuelve después de confirmar la transacción de operación, totales y auditoría. Si una respuesta se pierde tras commit, reintentar el mismo ID evita repetir el efecto.
 - Durante una caída de PostgreSQL puede faltar auditoría en la base de datos; se registran causas operativas locales. No existe todavía un journal de reenvío duradero.
 
-Variables principales: `IOT_SECRETS`, `TCP_PORT`, `MAX_CONNECTIONS`, `REGISTRY_URL`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `ASPNETCORE_URLS`. Los secretos se leen desde archivos, no desde argumentos de línea de comandos.
+Variables principales: `IOT_SECRETS`, `TCP_PORT`, `MAX_CONNECTIONS`, `MAX_ACTIVE_REQUESTS`, `REGISTRY_URL`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `ASPNETCORE_URLS`. Los secretos se leen desde archivos, no desde argumentos de línea de comandos.
 
 ## Protocolo y acciones
 
@@ -132,6 +142,6 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 ## Preparación de la entrega
 
-Pendientes: validar Docker y HAProxy, completar recuperación y pruebas de carga/fallos, revisar seguridad y límites, publicar repositorio, preparar presentación y vídeo y comprobar instalación desde un clon limpio. No hay todavía URL pública de despliegue ni enlaces finales de presentación.
+Pendientes: revisar el acceso del evaluador y la seguridad antes de exposición remota, publicar repositorio y ejecutar CI en GitHub, preparar presentación y vídeo y comprobar instalación desde un clon limpio. No hay todavía URL pública de despliegue ni enlaces finales de presentación. Los resultados medidos y las mejoras restantes del simulador se detallan en el estado del proyecto.
 
 La documentación y las pruebas deben permitir al alumno comprender y defender las decisiones; véase [Uso de IA](docs/ai-development.md).

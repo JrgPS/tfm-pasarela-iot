@@ -1,0 +1,39 @@
+{
+  "capturedUtc": "2026-10-15T14:20:16.6193464Z",
+  "dockerCpus": 8,
+  "dockerMemoryBytes": 8163889152,
+  "dockerOs": "Docker Desktop",
+  "architecture": "x86_64",
+  "gatewayReplicas": 2,
+  "registryReplicas": 2,
+  "databaseInstances": 1,
+  "topology": "All containers, including the simulator, share one local Docker Desktop engine.",
+  "images": {
+    "iot-tfm-gateway": "sha256:2a1f648c365db247eb27b267b2e392d07e1f60b4508c94a1d38c1dfe915948e9",
+    "iot-tfm-registry": "sha256:6ec903a7fe673c4b941e7ac1757a2641e248e28d8c74d579d313f5c8a0a04146",
+    "iot-tfm-simulator": "sha256:ae23b815f11aa8c5f2ede0a6cea235db92692969b28f93fb9855b620798201c3",
+    "postgres:18": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+    "haproxy:3.0-alpine": "sha256:d84eb36e91830bcaa67b23cfde1909850b99f11eb60da3abd185bd0daf3f75bb"
+  },
+  "applicationSourceSha256": {
+    "src/Iot.Gateway/Iot.Gateway.csproj": "ec041235c04bd5afe74e9bae0d8b5dee3fcf52e9520c3c071c77b5e85ef7b297",
+    "src/Iot.Gateway/Program.cs": "2287385ce0cdc0509d00d47cc73084d5b2caa7c949a32b85fe452ecf71fab313",
+    "src/Iot.Gateway/TcpGateway.cs": "01cf78538b1699d1a7b4b0ebbbef81ad4fe51e456e04c31d00afb07aee3beb5b",
+    "src/Iot.Persistence/Infrastructure.cs": "1def4a42ba02acb5214dc9b1ef0056f113e21171b1afcb27696a49ac3ccb91c0",
+    "src/Iot.Persistence/Iot.Persistence.csproj": "9debac88bd3830de677b5f29528d4c7dc124fa2265e5dd6af51e66c283189789",
+    "src/Iot.Persistence/schema.sql": "7d7ce8e89a8fa4c54dd691641b4835f9269874a3fb8755a796ca015b99c1b194",
+    "src/Iot.Protocol/Contracts.cs": "df66c63e804cfd9e537cfbcfdba88744b6acc3a9ad4fbc9f3e84dfae9838a1eb",
+    "src/Iot.Protocol/FrameReader.cs": "35eabb617f3badace057af046a407812b106f136568891e7e9c98e1b99a2f848",
+    "src/Iot.Protocol/Iot.Protocol.csproj": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3",
+    "src/Iot.Protocol/WireProtocol.cs": "53e3f8a33dfa0ae9ff4fbbd21c9a37f472fa1c5d83a97d3cd8ae2f6f24c8b8ea",
+    "src/Iot.Provisioning/Iot.Provisioning.csproj": "d082e87eb83a6761b98e83442957c27412551dfeea772d18a2d9e63c41dba230",
+    "src/Iot.Provisioning/Program.cs": "cffe3dd526d0dd315572fe4b25aaacaf3a4b97627fcc7e8786c1aa67757f1a1c",
+    "src/Iot.Registry/ConnectionReconciler.cs": "c1de51ad3d12cb6d2ae7435dd8e68d86a90030aab1ed12a1309b992b542792c2",
+    "src/Iot.Registry/Iot.Registry.csproj": "0da376bcd83247f04add0d334199ad81c0569535e168092f064f596663719e02",
+    "src/Iot.Registry/Program.cs": "89ed165670c4c4da12cad3286b48d5a5d733ccb5168f562e06e01fc6288ab72c",
+    "src/Iot.Registry/RegistryStore.cs": "e7cd8a32d8ab2ebd873b6cb3a306b1f7fb0c5bb56e46bc48ca9c218574aa048d",
+    "src/Iot.Simulator/DeviceClient.cs": "ce2bd6ad2282c08588b2972ae8618ffac991dce8e6549f19a6b8cac4f8026678",
+    "src/Iot.Simulator/Iot.Simulator.csproj": "505108f0b6ba16c3c89173f216f4110bfa6e676911301338c437a583b7288cfe",
+    "src/Iot.Simulator/Program.cs": "b4ef12f56391bc6650c817b1b2e14c73c3654dec1c808ad04026355399b7f8d6"
+  }
+}

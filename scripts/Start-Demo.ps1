@@ -3,9 +3,16 @@ param([ValidateRange(1,100000)][int]$Devices=1000,
       [ValidateRange(1,8)][int]$Registries=1)
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path $PSScriptRoot -Parent)
-Get-Command docker -ErrorAction Stop | Out-Null
+$dockerCommand=Get-Command docker -ErrorAction SilentlyContinue
+$dockerExe=if ($dockerCommand) { $dockerCommand.Source } else {
+    @("$env:LOCALAPPDATA/Programs/DockerDesktop/resources/bin/docker.exe",
+      "$env:ProgramFiles/Docker/Docker/resources/bin/docker.exe") |
+        Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+if (!$dockerExe) { throw 'Docker CLI not found. Install Docker Desktop and start its Linux engine.' }
+$env:PATH=(Split-Path $dockerExe -Parent)+';'+$env:PATH
 function Run-Docker([string[]]$DockerArguments) {
-    & docker @DockerArguments
+    & $dockerExe @DockerArguments
     if ($LASTEXITCODE -ne 0) { throw "Docker failed: $($DockerArguments -join ' ')" }
 }
 New-Item -ItemType Directory -Force -Path secrets,results | Out-Null

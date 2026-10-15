@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-15T14:30:55.4460679+00:00",
+  "devices": 500,
+  "operationsPerDevice": 20,
+  "synchronizeStart": true,
+  "devicesReady": 500,
+  "intervalMs": 50,
+  "rampMs": 2,
+  "confirmedOperations": 10000,
+  "failedDevices": 0,
+  "reconnections": 0,
+  "retries": 0,
+  "durationSeconds": 13.1808856,
+  "uniqueConfirmedPerSecond": 758.674364035145,
+  "operationLatencyMs": {
+    "p50": 440.8922,
+    "p95": 533.8477,
+    "p99": 591.1639
+  },
+  "errors": []
+}

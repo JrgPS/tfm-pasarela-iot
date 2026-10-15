@@ -51,6 +51,7 @@ public sealed class DeviceClient(string host, int port, byte[] expectedCertHash,
         await tls.AuthenticateAsClientAsync(new SslClientAuthenticationOptions { TargetHost = host }, timeout.Token);
         reader = new FrameReader(tls, TimeSpan.FromSeconds(10));
         var init = await ExchangeAsync(WireProtocol.CreateRequest(device.Identity, "001", "-", key), token);
+        if (init.Code == "009") throw new IOException("Initialization dependency unavailable.");
         if (init.Code != "000") throw new InvalidOperationException($"Initialization denied: {init.Code}");
     }
 

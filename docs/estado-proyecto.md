@@ -1,54 +1,60 @@
 # Estado del proyecto
 
-Primera implementación: 15 de octubre de 2026. Este registro distingue lo implementado de lo comprobado. El TFM todavía no está preparado para enviar.
+Actualizado el 15 de octubre de 2026 tras la validación en Docker Desktop. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El TFM aún necesita publicación y materiales finales de entrega.
 
 ## Implementado
 
-- Solución .NET con siete proyectos: protocolo, persistencia, registro, gateway, aprovisionamiento, simulador y pruebas.
-- Protocolo ASCII/LF acotado, fechas UTC, firmas HMAC, identidad con ceros iniciales y aritmética exacta.
-- Gateway TCP/TLS asíncrono y API interna autenticada.
-- Persistencia PostgreSQL, auditoría, respuestas aceptadas idempotentes y transacciones con bloqueo por dispositivo.
-- Generación de secretos y certificado de laboratorio, cifrado de claves de dispositivos y alta ficticia.
-- Simulador concurrente básico con comprobación de resultados y totales y exportación JSON.
-- Dockerfile, Compose, HAProxy, scripts de arranque y tareas para VS Code.
-- Flujo de GitHub Actions preparado; todavía no ejecutado en GitHub.
+- Solución C#/.NET 10: protocolo, persistencia, registro, gateway, aprovisionamiento, simulador y pruebas.
+- TCP persistente con TLS, HMAC por dispositivo, fechas UTC, campos de longitud fija y mensajes ASCII/LF acotados.
+- Inicialización, suma exacta y consulta de totales; PostgreSQL, transacciones e idempotencia entre réplicas.
+- Claves de dispositivo cifradas y secretos privados montados en los servicios que los necesitan.
+- Dos gateways y dos registros con HAProxy; límite de conexiones y trabajo activo por gateway.
+- Actualización transaccional de actividad, reconciliación de conexiones perdidas y drenaje al apagar un gateway.
+- Simulador con inicio sincronizado, reconexión y reintentos, comprobación de totales, métricas JSON/CSV.
+- Scripts de arranque, validación, fallos de réplica, comparación de configuraciones y copia/restauración.
+- Automatización de GitHub Actions preparada; todavía no ejecutada en GitHub.
 
-## Verificado en este equipo
+## Verificado
 
-1. SDK oficial local .NET **10.0.402**, descargado a `.tools/dotnet`.
-2. Compilación de los siete proyectos: cero errores y cero advertencias.
-3. PostgreSQL 18, binarios oficiales EDB, iniciado temporalmente en `127.0.0.1:55432`, con almacenamiento dentro de `.tools/pgdata`. No se instaló un servicio Windows.
-4. Aprovisionamiento de **1000 dispositivos ficticios**, con secretos generados localmente y excluidos de Git.
-5. **23 pruebas correctas, cero fallos y cero omisiones**: 15 de protocolo y 8 de integración con PostgreSQL real.
-6. Arranque del registro y gateway, con comprobaciones HTTP de readiness durante el script de prueba local. El gateway anunció escucha TLS en `17443`.
+1. Construcción de las imágenes y despliegue en Docker Desktop con motor Linux, 8 CPU virtuales y aproximadamente 7,6 GiB de RAM asignada.
+2. Aprovisionamiento de 1000 dispositivos ficticios para el simulador y datos adicionales aislados de las pruebas de red.
+3. **29 pruebas correctas, cero fallos y cero omisiones** en Docker: 15 de protocolo, 9 de PostgreSQL y 5 de TCP/TLS real.
+4. Recorrido completo: dispositivo, balanceador, gateway, registro y PostgreSQL. Autenticación, suma, respuesta y totales comprobados.
+5. Perfiles cortos sincronizados de 100, 500 y 1000 dispositivos, sin fallos finales ni diferencias de totales.
+6. Prueba sostenida: **500 dispositivos y 60.000 operaciones en 605,59 segundos**, cero fallos y cero reintentos; media de 99,08 operaciones/s y p95 de la suma de 47,68 ms.
+7. Caída abrupta y apagado ordenado de un gateway, y caída abrupta de un registro: 10.000 sumas confirmadas en cada caso, reconexiones observadas y totales correctos.
+8. Pérdida deliberada de una respuesta tras commit y reintento por otra conexión sin repetir el efecto.
+9. Restauración de una copia lógica en una base nueva: mismos dispositivos y operaciones del punto de copia, cero incoherencias de totales. La base temporal se eliminó al terminar.
+10. Comparación exploratoria 1+1 frente a 2+2 réplicas y metadatos de imágenes y recursos capturados.
 
-Las pruebas de integración incluyen persistencia entre instancias del servicio, 50 reintentos concurrentes de una misma operación, 100 operaciones distintas concurrentes, reutilización de ID con contenido diferente, firma inválida, dispositivo desconocido, bloqueo, inicialización y errores funcionales. Son pruebas de consistencia; no constituyen la prueba de carga del simulador ni una prueba completa de red.
+El [informe con evidencia](validacion-docker.md) contiene las métricas exactas. [Pruebas reproducibles](pruebas-reproducibles.md) detalla los comandos y las condiciones. Los resultados TRX locales están en `results/tests/docker-tests.trx`.
 
-El resultado TRX de esta ejecución está en `tests/Iot.Tests/TestResults/initial-tests.trx`, ignorado por Git. Las pruebas pueden repetirse con `IOT_TEST_CONNECTION` apuntando a una base de datos de pruebas; en su ausencia se omiten explícitamente las ocho de PostgreSQL.
+## Interpretación de los resultados
 
-## Bloqueo observado
+- La prueba de diez minutos cumple el objetivo inicial de 500 dispositivos, confirmación superior al 99 % y p95 inferior a un segundo.
+- El perfil corto de 1000 dispositivos es una prueba de estrés con ráfagas; su p95 supera un segundo. No se declara que ese perfil cumpla el objetivo de latencia de la carga de 500.
+- La comparación exploratoria no mostró mejora de rendimiento al duplicar réplicas. No se atribuye a una causa concreta sin más análisis; la tolerancia a fallos sí quedó demostrada.
+- Cliente y servidores comparten el mismo equipo. No son cifras de producción ni un compromiso de capacidad máxima.
+- HAProxy, PostgreSQL y el host son puntos únicos de fallo. La prueba no demuestra alta disponibilidad integral.
 
-Al ejecutar el simulador a través del script de prueba local, Windows rechazó cargar su ensamblado con el error **Control de aplicaciones, 0x800711C7**. El simulador no llegó a generar tráfico. Por tanto:
+## Incidencias resueltas o contextualizadas
 
-- No se afirma que el recorrido completo TCP/TLS haya pasado.
-- No hay métricas de conexiones, operaciones por segundo ni latencia del simulador verificadas.
-- No se han desactivado protecciones ni alterado políticas de Windows.
-- El script detuvo las dos instancias de servicios que había creado tras el fallo.
+- El bloqueo anterior de Windows por Control de aplicaciones no se ha desactivado: la ejecución se ha validado dentro de Docker Linux.
+- Un pool predeterminado de cien conexiones en una prueba saturó PostgreSQL al compartir servidor con la demo. Se limitó a veinte y la batería pasó.
+- La imagen inicial emitía un aviso por biblioteca GSSAPI ausente. La dependencia está incluida en la imagen de ejecución actual.
 
-Docker no estaba disponible en las rutas y comandos inspeccionados. La configuración de contenedores y HAProxy queda pendiente de prueba, preferentemente en una VM Linux sobre Proxmox o en un equipo con Docker operativo. El bloqueo de Windows no demuestra un defecto del protocolo, pero tampoco permite dar por verificado el programa.
+## Pendientes para la entrega
 
-## Trabajo pendiente, por prioridad
+1. Publicar el repositorio, ejecutar CI y validar instalación desde un clon limpio con secretos recién generados.
+2. Preparar presentación, vídeo de demostración, guía de uso y explicación de decisiones para la defensa.
+3. Decidir el acceso del evaluador; revisar privilegios de base de datos, límites de autenticación y certificados antes de exposición remota.
+4. Cerrar las versiones de imágenes para el paquete de entrega. Los identificadores de las imágenes usadas en estas pruebas ya están registrados.
+5. Simular explícitamente una caída de la base de datos y comprobar el comportamiento de sobrecarga y la recuperación posterior.
 
-1. Ejecutar el conjunto Docker en Linux y corregir cualquier problema real de imágenes, DNS, salud o configuración.
-2. Verificar con el simulador un dispositivo y después perfiles concurrentes de 100, 500 y 1000; guardar resultados medidos.
-3. Pruebas de caída de réplica y pérdida de respuesta por red, límites de trabajo activo y agotamiento de capacidad.
-4. Actualización de actividad y reconciliación de conexiones perdidas, drenaje planificado y modo avanzado de errores del simulador.
-5. Revisar tratamiento de denegaciones, límites de autenticación, secretos y privilegios de base de datos antes de exposición remota.
-6. Fijar versiones de imágenes y dependencias para la entrega, verificar copias y restauración e instalación desde un clon limpio.
-7. Publicar repositorio y ejecutar CI; preparar presentación, vídeo, acceso del evaluador y formulario de entrega.
+Mejoras posteriores al mínimo: mezclas configurables de escenarios inválidos en el simulador, métricas de todas las acciones, escalado por calendario y un journal duradero para auditoría durante averías. En rechazos de transporte la auditoría conserva la causa; no se garantiza todavía una muestra de los bytes rechazados ni reenvío de toda auditoría tras caída de PostgreSQL.
 
-## Entorno local y confidencialidad
+## Entorno y confidencialidad
 
-`.tools/`, `secrets/`, salidas de compilación, logs y resultados locales están excluidos del repositorio. El PDF original del campus se mantiene localmente y no se añade al código público. No se han contratado servicios ni consumido API de IA desde la aplicación.
+Los servicios quedan disponibles únicamente en `localhost:7443`. La API interna y PostgreSQL no publican sus puertos en el host. Los contenedores auxiliares de las pruebas se retiran y no se elimina el volumen de datos.
 
-Los datos persistidos son únicamente ficticios. No se ha accedido al NAS ni a Proxmox, ni se ha publicado el servicio en Internet.
+`.tools/`, `secrets/`, compilaciones, logs y resultados de ejecución están ignorados por Git. Solo se selecciona evidencia sin claves bajo `docs/evidence/`. El PDF original del campus se conserva localmente. No se han contratado servicios, consumido APIs de IA desde la aplicación ni accedido al NAS o Proxmox.

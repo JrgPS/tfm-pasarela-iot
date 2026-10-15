@@ -1,0 +1,32 @@
+{
+  "scenario": "abrupt loss and restart of one registry replica",
+  "startUtc": "2026-10-15T14:17:54.707822Z",
+  "targetContainer": "2402002c7af12236c631d7540ccb0a787a064c71977765d0bbdcb0dbd994615d",
+  "connectionsBeforeFault": 100,
+  "gatewayDistributionBeforeFault": [
+    "09a2a3a47a8a:50",
+    "b31bfd72443f:50"
+  ],
+  "simulatorExitCode": 0,
+  "result": {
+    "utc": "2026-10-15T16:18:13.8592957+02:00",
+    "devices": 100,
+    "operationsPerDevice": 100,
+    "synchronizeStart": true,
+    "devicesReady": 100,
+    "intervalMs": 100,
+    "rampMs": 2,
+    "confirmedOperations": 10000,
+    "failedDevices": 0,
+    "reconnections": 21,
+    "retries": 21,
+    "durationSeconds": 18.4623218,
+    "uniqueConfirmedPerSecond": 541.6436842737731,
+    "operationLatencyMs": {
+      "p50": 34.3823,
+      "p95": 86.136,
+      "p99": 597.7286
+    },
+    "errors": []
+  }
+}

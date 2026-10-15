@@ -35,6 +35,7 @@ services:
       IOT_SECRETS: /run/secrets
       DB_HOST: db
       Logging__LogLevel__Microsoft.AspNetCore: Warning
+      Logging__LogLevel__Microsoft.Hosting.Lifetime: Warning
     volumes:
       - ./secrets/db-password:/run/secrets/db-password:ro
       - ./secrets/api-key:/run/secrets/api-key:ro
@@ -56,14 +57,16 @@ services:
       TCP_PORT: "7443"
       REGISTRY_URL: http://proxy:8080
       MAX_CONNECTIONS: "2000"
+      MAX_ACTIVE_REQUESTS: "128"
       Logging__LogLevel__Microsoft.AspNetCore: Warning
+      Logging__LogLevel__System.Net.Http.HttpClient: Warning
     volumes:
       - ./secrets/api-key:/run/secrets/api-key:ro
       - ./secrets/server.pfx:/run/secrets/server.pfx:ro
       - ./secrets/cert-password:/run/secrets/cert-password:ro
     networks: [app]
     restart: unless-stopped
-    stop_grace_period: 20s
+    stop_grace_period: 30s
     logging: *logging
 
   proxy:
@@ -105,6 +108,23 @@ services:
       - ./results:/app/results
     networks: [app]
     command: [--host, proxy, --devices, "1", --operations, "5"]
+
+  tests:
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.tests
+    environment:
+      IOT_NETWORK_TESTS: ${IOT_NETWORK_TESTS:-false}
+      IOT_SECRETS: /run/secrets
+    volumes:
+      - ./secrets/db-password:/run/secrets/db-password:ro
+      - ./secrets/master-key:/run/secrets/master-key:ro
+      - ./secrets/server.cer:/run/secrets/server.cer:ro
+      - ./results/tests:/test-results
+    networks: [data, app]
+    depends_on:
+      db: { condition: service_healthy }
 
 volumes:
   pgdata:

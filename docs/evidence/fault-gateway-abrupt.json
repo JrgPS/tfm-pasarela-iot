@@ -1,0 +1,32 @@
+{
+  "scenario": "abrupt loss and restart of one gateway replica",
+  "startUtc": "2026-10-15T14:17:29.103646Z",
+  "targetContainer": "09a2a3a47a8a11acb162fbbadd6d6c27f594c201779f8742bbc44ffd59243a0a",
+  "connectionsBeforeFault": 100,
+  "gatewayDistributionBeforeFault": [
+    "09a2a3a47a8a:50",
+    "b31bfd72443f:50"
+  ],
+  "simulatorExitCode": 0,
+  "result": {
+    "utc": "2026-10-15T16:17:53.3746844+02:00",
+    "devices": 100,
+    "operationsPerDevice": 100,
+    "synchronizeStart": true,
+    "devicesReady": 100,
+    "intervalMs": 100,
+    "rampMs": 2,
+    "confirmedOperations": 10000,
+    "failedDevices": 0,
+    "reconnections": 50,
+    "retries": 50,
+    "durationSeconds": 23.5448311,
+    "uniqueConfirmedPerSecond": 424.7216706515257,
+    "operationLatencyMs": {
+      "p50": 35.9877,
+      "p95": 188.5263,
+      "p99": 2175.5599
+    },
+    "errors": []
+  }
+}

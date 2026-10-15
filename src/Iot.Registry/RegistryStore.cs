@@ -8,6 +8,16 @@ namespace Iot.Registry;
 
 public sealed class RegistryStore(NpgsqlDataSource source, DeviceKeyProtector protector)
 {
+    public async Task<int> ReconcileLostAsync(TimeSpan maxIdle, CancellationToken token)
+    {
+        await using var cmd = source.CreateCommand("""
+            UPDATE connections SET closed_at=now(),close_reason='lost_inferred'
+            WHERE closed_at IS NULL AND last_activity_at < now()-@idle
+            """);
+        cmd.Parameters.AddWithValue("idle", maxIdle);
+        return await cmd.ExecuteNonQueryAsync(token);
+    }
+
     public async Task OpenAsync(ConnectionEvent e, CancellationToken token)
     {
         await using var cmd = source.CreateCommand("""
@@ -205,7 +215,8 @@ public sealed class RegistryStore(NpgsqlDataSource source, DeviceKeyProtector pr
         await using var cmd = new NpgsqlCommand("""
             INSERT INTO message_attempts(event_id,connection_id,device_claim,request_id,action,code,duplicate,canonical,detail)
             VALUES(@event,@connection,@device,@id,@action,@code,@duplicate,@canonical,@detail)
-            ON CONFLICT(event_id) DO NOTHING
+            ON CONFLICT(event_id) DO NOTHING;
+            UPDATE connections SET last_activity_at=now() WHERE id=@connection
             """, connection, tx);
         cmd.Parameters.AddWithValue("event", Guid.Parse(message.EventId));
         cmd.Parameters.AddWithValue("connection", Guid.Parse(message.ConnectionId));

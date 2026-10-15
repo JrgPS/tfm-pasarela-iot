@@ -19,6 +19,25 @@ public sealed class PostgresFactAttribute : FactAttribute
 public sealed class PostgresTests
 {
     [PostgresFact]
+    public async Task TrafficRefreshesActivityAndStaleConnectionsAreMarkedAsInferredLosses()
+    {
+        await using var test = await TestStore.Create();
+        var connection = await test.Initialize();
+        await using var age = test.Database.CreateCommand(
+            "UPDATE connections SET last_activity_at=now()-interval '4 minutes' WHERE id=@id");
+        age.Parameters.AddWithValue("id", Guid.Parse(connection));
+        await age.ExecuteNonQueryAsync();
+        await test.Send(connection, "003", "-");
+        await test.Store.ReconcileLostAsync(TimeSpan.FromMinutes(3), CancellationToken.None);
+        await using var state = test.Database.CreateCommand("SELECT close_reason FROM connections WHERE id=@id");
+        state.Parameters.AddWithValue("id", Guid.Parse(connection));
+        Assert.Equal(DBNull.Value, await state.ExecuteScalarAsync());
+        await age.ExecuteNonQueryAsync();
+        await test.Store.ReconcileLostAsync(TimeSpan.FromMinutes(3), CancellationToken.None);
+        Assert.Equal("lost_inferred", await state.ExecuteScalarAsync());
+    }
+
+    [PostgresFact]
     public async Task InitializationAdditionAndTotalsAreDurable()
     {
         await using var test = await TestStore.Create();
@@ -130,7 +149,9 @@ public sealed class PostgresTests
             var connectionString = Environment.GetEnvironmentVariable("IOT_TEST_CONNECTION")!;
             if (!new NpgsqlConnectionStringBuilder(connectionString).Database!.EndsWith("_tests", StringComparison.Ordinal))
                 throw new InvalidOperationException("Integration tests require a dedicated database ending in _tests.");
-            var db = NpgsqlDataSource.Create(connectionString);
+            // Share the server with live demo replicas without consuming its entire connection budget.
+            var bounded = new NpgsqlConnectionStringBuilder(connectionString) { MaxPoolSize = 20 };
+            var db = NpgsqlDataSource.Create(bounded.ConnectionString);
             await Schema.ApplyAsync(db);
             var protector = new DeviceKeyProtector(RandomNumberGenerator.GetBytes(32));
             var test = new TestStore { Database = db, Protector = protector, Store = new(db, protector) };
