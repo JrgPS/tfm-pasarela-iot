@@ -1,0 +1,9 @@
+.git
+.tools
+**/bin
+**/obj
+secrets
+tmp
+results
+Doc
+TestResults

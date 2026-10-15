@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "TFM: compilar",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-NoProfile", "-File", "${workspaceFolder}/scripts/Invoke-Dotnet.ps1", "build", "IotGateway.slnx"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "TFM: pruebas",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-NoProfile", "-File", "${workspaceFolder}/scripts/Invoke-Dotnet.ps1", "test", "IotGateway.slnx"],
+      "group": "test",
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

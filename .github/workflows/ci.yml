@@ -1,0 +1,33 @@
+name: build-and-test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: iot_tests
+          POSTGRES_USER: iot_tests
+          POSTGRES_PASSWORD: ci-only-not-a-production-secret
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U iot_tests -d iot_tests"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet restore IotGateway.slnx
+      - run: dotnet build IotGateway.slnx -c Release --no-restore
+      - run: dotnet test IotGateway.slnx -c Release --no-build --logger "trx;LogFileName=tests.trx"
+        env:
+          IOT_TEST_CONNECTION: Host=localhost;Database=iot_tests;Username=iot_tests;Password=ci-only-not-a-production-secret
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'

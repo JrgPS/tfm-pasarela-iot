@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+.tools/
+tmp/
+secrets/
+.env
+.vs/
+TestResults/
+results/*
+!results/.gitkeep
+*.user
+*.suo
+*.pfx
+*.key
+Doc/*.pdf

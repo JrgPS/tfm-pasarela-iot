@@ -1,0 +1,115 @@
+name: iot-tfm
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: iot
+      POSTGRES_USER: iot
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./secrets/db-password:/run/secrets/db-password:ro
+    networks: [data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U iot -d iot"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+    logging: *logging
+
+  registry:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      args: { PROJECT: Iot.Registry }
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      IOT_SECRETS: /run/secrets
+      DB_HOST: db
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+    volumes:
+      - ./secrets/db-password:/run/secrets/db-password:ro
+      - ./secrets/api-key:/run/secrets/api-key:ro
+      - ./secrets/master-key:/run/secrets/master-key:ro
+    networks: [app, data]
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+    logging: *logging
+
+  gateway:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      args: { PROJECT: Iot.Gateway }
+    environment:
+      ASPNETCORE_URLS: http://+:8081
+      IOT_SECRETS: /run/secrets
+      TCP_PORT: "7443"
+      REGISTRY_URL: http://proxy:8080
+      MAX_CONNECTIONS: "2000"
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+    volumes:
+      - ./secrets/api-key:/run/secrets/api-key:ro
+      - ./secrets/server.pfx:/run/secrets/server.pfx:ro
+      - ./secrets/cert-password:/run/secrets/cert-password:ro
+    networks: [app]
+    restart: unless-stopped
+    stop_grace_period: 20s
+    logging: *logging
+
+  proxy:
+    image: haproxy:3.0-alpine
+    ports:
+      - "127.0.0.1:7443:7443"
+    volumes:
+      - ./deploy/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks: [app]
+    restart: unless-stopped
+    logging: *logging
+
+  provision:
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      args: { PROJECT: Iot.Provisioning }
+    environment:
+      IOT_SECRETS: /work/secrets
+      DB_HOST: db
+    volumes:
+      - ./secrets:/work/secrets
+    networks: [data]
+    command: [seed]
+    logging: *logging
+
+  simulator:
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      args: { PROJECT: Iot.Simulator }
+    environment:
+      IOT_SECRETS: /run/secrets
+    volumes:
+      - ./secrets/devices.json:/run/secrets/devices.json:ro
+      - ./secrets/server.cer:/run/secrets/server.cer:ro
+      - ./results:/app/results
+    networks: [app]
+    command: [--host, proxy, --devices, "1", --operations, "5"]
+
+volumes:
+  pgdata:
+
+networks:
+  app:
+  data:
+    internal: true
