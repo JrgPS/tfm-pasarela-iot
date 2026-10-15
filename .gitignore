@@ -13,3 +13,4 @@ results/*
 *.pfx
 *.key
 Doc/*.pdf
+output/

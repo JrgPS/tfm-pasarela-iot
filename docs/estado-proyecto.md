@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio es público y la presentación y el guion están preparados. Falta la revisión final del autor y el envío al campus.
+Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El autor ha solicitado repositorio privado y preparará sus diapositivas con la guía PDF. Los permisos del evaluador quedan para más adelante. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. Falta la presentación definitiva, la revisión final y el envío al campus.
 
 ## Implementado
 
@@ -45,8 +45,8 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 
 ## Pendientes para la entrega
 
-1. Revisar los [enlaces de entrega](entrega/README.md). El repositorio está publicado, CI terminó correctamente y el clon público sin credenciales está comprobado.
-2. Revisar con el autor la presentación y el guion ya preparados en [materiales de entrega](entrega/README.md), y grabar el vídeo si se incluye.
+1. Revisar los [enlaces de entrega](entrega/README.md). CI terminó correctamente y el clon sin credenciales fue comprobado cuando el repositorio era público; esa evidencia es histórica.
+2. Preparar la presentación final siguiendo la guía de [materiales de entrega](entrega/README.md). Aclarar con la escuela cómo entregar sin vídeo, por la discrepancia del formulario.
 3. Facilitar al evaluador repositorio y presentación accesibles, y enviar el formulario del campus tras la revisión del autor. El perfil actual ofrece ejecución local reproducible.
 
 Si se decide añadir un despliegue remoto, revisar antes privilegios de base de datos, límites de autenticación y certificados. Las etiquetas de imágenes son mutables y conviene fijar digests para conservación a largo plazo. Las imágenes usadas en los ensayos y en el cierre están identificadas en los metadatos, sin afirmar que una descarga futura producirá exactamente los mismos binarios.

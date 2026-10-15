@@ -2,9 +2,9 @@
 
 Proyecto del Máster en Desarrollo con IA E.1. Recibe dispositivos mediante conexiones TCP persistentes con TLS, valida su identidad mediante HMAC y PostgreSQL, ejecuta sumas exactas y consulta totales. Incluye un simulador de dispositivos y configuración de réplicas con Docker Compose.
 
-**Estado: MVP validado localmente y en GitHub Actions, con presentación y guion preparados para la revisión final del autor.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
+**Estado: MVP validado localmente y en GitHub Actions, con manual y guía para que el autor prepare sus diapositivas definitivas.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
 
-[Repositorio público](https://github.com/JrgPS/tfm-pasarela-iot) · [Presentación](https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/entrega/Presentacion-TFM.pptx) · [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions)
+[Repositorio](https://github.com/JrgPS/tfm-pasarela-iot) · [Materiales de entrega](docs/entrega/README.md) · [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions)
 
 ## Problema y alcance
 
@@ -149,6 +149,6 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 ## Preparación de la entrega
 
-Los [materiales de entrega](docs/entrega/README.md) incluyen presentación editable, guion de demostración y datos para el formulario. La [validación de fallos](docs/validacion-fallos.md) comprueba caída de PostgreSQL y rechazo por capacidad con recuperación consistente. El repositorio es público y [ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191). Pendientes: revisión final del autor, decidir si se añade una grabación y envío del formulario. No hay URL pública de despliegue. Los resultados medidos y los límites se detallan en el estado del proyecto.
+Los [materiales de entrega](docs/entrega/README.md) incluyen el [manual completo en PDF](docs/entrega/Manual-completo-Pasarela-IoT-TFM.pdf), la [guía de diapositivas](docs/entrega/Guia-contenido-diapositivas-TFM.pdf), un PPTX de referencia y el guion de demostración. El autor preparará personalmente la presentación final. La [validación de fallos](docs/validacion-fallos.md) documenta recuperación de PostgreSQL y sobrecarga. [Ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191).
 
-La documentación y las pruebas deben permitir al alumno comprender y defender las decisiones; véase [Uso de IA](docs/ai-development.md).
+El autor ha solicitado mantener el repositorio privado y conceder más adelante acceso al evaluador. No tiene previsto grabar vídeo; antes del envío debe aclararse con BigSchool que el formulario exige su URL aunque las explicaciones lo describan como opcional. Pendientes: presentación definitiva, revisión del autor, permisos y envío al campus. No hay URL pública de despliegue.
