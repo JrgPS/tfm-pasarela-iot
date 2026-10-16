@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El autor ha solicitado repositorio privado y preparará sus diapositivas con la guía PDF. Los permisos del evaluador quedan para más adelante. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. Falta la presentación definitiva, la revisión final y el envío al campus.
+Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio se mantiene público por decisión del autor, que preparará sus diapositivas con la guía PDF. No se han añadido colaboradores. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. Falta la presentación definitiva, la revisión final y el envío al campus.
 
 ## Implementado
 

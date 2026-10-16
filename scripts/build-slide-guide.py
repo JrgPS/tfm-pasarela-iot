@@ -68,8 +68,8 @@ slides=[
  visual='Dos columnas breves: aportación del autor y asistencia de IA. Añade un ejemplo real de corrección, como limitar pools o reintentar 013.',
  explain='La aplicación no necesita un LLM en ejecución. Explica solo lo que hayas revisado y entendido; no atribuyas desarrollo manual a código asistido.',source='docs/ai-development.md y docs/adr/'),
  dict(n=12,title='Límites, conclusiones y acceso',purpose='Cerrar con una valoración honesta y una vía de evaluación.',
- visible=['MVP funcional con comunicación autenticada, persistencia y recuperación de réplicas.','PostgreSQL, HAProxy y el host siguen siendo puntos únicos de fallo.','Duplicar réplicas no mejoró el rendimiento en la comparación exploratoria.','Código y documentación en el repositorio; ejecución local con Docker. Acceso del evaluador pendiente de conceder.'],
- visual='Conclusión breve y enlaces clicables. Para repositorio privado, indica que requiere permisos; no prometas acceso público ni una URL cloud inexistente.',
+ visible=['MVP funcional con comunicación autenticada, persistencia y recuperación de réplicas.','PostgreSQL, HAProxy y el host siguen siendo puntos únicos de fallo.','Duplicar réplicas no mejoró el rendimiento en la comparación exploratoria.','Código y documentación en el repositorio; ejecución local con Docker. Repositorio público; comprobar enlaces definitivos antes de entregar.'],
+ visual='Conclusión breve y enlaces clicables. El repositorio sigue público por decisión del autor; comprueba sus enlaces. No prometas una URL cloud inexistente.',
  explain='Mejoras futuras: mediciones con cliente separado, auditoría duradera, rotación de claves y disponibilidad de infraestructura. No hace falta incorporar estas mejoras antes de explicar el MVP.',source='docs/estado-proyecto.md y docs/entrega/README.md'),
 ]
 
@@ -87,7 +87,7 @@ story += [p('Qué debe conseguir tu presentación','label'),p('El evaluador debe
 story += [p('Estructura propuesta: 12 diapositivas','label'),p('Es una recomendación para este proyecto, no un número exigido por la escuela. Si prefieres diez, combina las diapositivas 5 y 6 y las 9 y 10. Incluye siempre problema, solución, funcionamiento, construcción y resultados.')]
 story += [p('Cómo utilizar esta guía','label'),p('Cada ficha indica el objetivo, texto que puedes adaptar, una propuesta visual, una explicación para tus notas y las fuentes del repositorio. El texto visible contiene lo esencial. Las notas amplían, pero no deben ocultar limitaciones importantes.')]
 story += [p('Diseño a tu criterio','label'),p('Como orientación, usa formato 16:9, una idea principal por diapositiva y texto legible. Sustituye párrafos largos por diagramas, tablas cortas y capturas reales. No copies páginas enteras del manual. Añade enlaces a las evidencias en notas o al pie.')]
-story += [p('Entrega sin vídeo y acceso privado','label'),p('Has decidido preparar personalmente las diapositivas y no grabar vídeo. Haz la presentación autocontenida, con al menos una captura funcional y resultados legibles. La auditoría observó que el formulario actual marca URL Vídeo como requerida: la discrepancia sigue pendiente de aclaración y no se resuelve con este PDF. Los permisos del evaluador del repositorio privado se concederán más adelante, antes de enviar.')]
+story += [p('Entrega sin vídeo y acceso al repositorio','label'),p('Has decidido preparar personalmente las diapositivas y no grabar vídeo. Haz la presentación autocontenida, con al menos una captura funcional y resultados legibles. La auditoría observó que el formulario actual marca URL Vídeo como requerida: la discrepancia sigue pendiente de aclaración y no se resuelve con este PDF. El autor ha decidido mantener el repositorio público por ahora. No se han añadido colaboradores; comprueba los enlaces definitivos antes del envío.')]
 story += [p('No incluir','label'),p('Claves o contraseñas, datos del trabajo, pagos reales, resultados inventados ni afirmaciones de alta disponibilidad integral o escalado lineal. La presentación anterior es solo un borrador de referencia y será sustituida por la tuya.')]
 for start in range(0,len(slides),2):
     story.append(PageBreak())
@@ -104,7 +104,7 @@ for title,body in [
  ('Resultados','Cada cifra conserva escenario y unidades. Los datos de 500 dispositivos con pausa no se mezclan con ráfagas de mil. La prueba de sobrecarga indica límites temporales. El resultado desfavorable de la comparación de réplicas sigue visible.'),
  ('Autoría y comprensión','Puedes explicar personalmente las decisiones, la transacción, el mismo ID durante el reintento y el uso de IA. Las capturas son reales y no contienen secretos.'),
  ('Archivo final','Exporta tu presentación a PDF y conserva su fuente editable. Revisa a pantalla completa que no haya texto cortado y que los enlaces funcionen. No hay un número de diapositivas obligatorio en los requisitos revisados.'),
- ('Acceso del evaluador','El repositorio privado y sus archivos requieren permisos. Los concederemos cuando lo indiques. Hasta entonces, el enlace no sirve como acceso abierto para el evaluador.'),
+ ('Acceso del evaluador','El repositorio se mantiene público por decisión del autor. Comprueba que el evaluador puede abrir el código, los PDF y las diapositivas definitivas; no se han añadido colaboradores.'),
  ('Formulario','Nombre y email deben coincidir con matrícula. Repositorio y slides necesitan enlaces válidos. No inventes una URL de vídeo para superar el campo; la entrega sin vídeo requiere aclarar la condición actual del formulario.'),
 ]:
     story += [p(title,'label'),p(body)]

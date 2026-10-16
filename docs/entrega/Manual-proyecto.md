@@ -14,7 +14,7 @@ El equipo disponible incluye un Synology DS920+ y un CHUWI LarkBox X con Intel N
 
 La documentación describe la versión publicada v1.0.0, cuyo commit de cierre es 245b834. El código y la configuración de CI se comprobaron en el commit f6ef8b9; después se actualizaron enlaces y evidencias documentales. La fecha de corte es el 15 de octubre de 2026, con referencia de calendario Europe/Madrid. Los sellos de tiempo del protocolo y de las evidencias utilizan UTC cuando así lo indican.
 
-La versión incluye dos servicios replicables de aplicación, una base independiente, balanceador, aprovisionamiento, simulador, pruebas y presentación. Los dos trabajos de GitHub Actions finalizaron correctamente. El autor preparará personalmente las diapositivas definitivas a partir de la guía PDF. No tiene previsto grabar vídeo. Quedan la revisión final, el acceso del evaluador y el envío al campus; debe aclararse que el formulario actual exige URL de vídeo aunque las explicaciones lo describían como opcional.
+La versión incluye dos servicios replicables de aplicación, una base independiente, balanceador, aprovisionamiento, simulador, pruebas y presentación. Los dos trabajos de GitHub Actions finalizaron correctamente. El autor preparará personalmente las diapositivas definitivas a partir de la guía PDF. No tiene previsto grabar vídeo. Quedan la revisión final, la comprobación de acceso del evaluador y el envío al campus; debe aclararse que el formulario actual exige URL de vídeo aunque las explicaciones lo describían como opcional.
 
 Este manual consolida requisitos, implementación y resultados. Cuando la especificación inicial expresa una intención que la versión actual no cumple, prevalecen el código y las precisiones de este documento. No se incluyen claves, contraseñas ni información privada de un despliegue.
 
@@ -33,7 +33,7 @@ Este manual consolida requisitos, implementación y resultados. Cuando la especi
 | Replicar dos componentes | gateway y registry con Docker Compose y HAProxy. |
 | Simular carga concurrente | Cliente configurable con rampa, pausas, sincronización y métricas. |
 | Recuperar operaciones tras un fallo | Reconexión, reintentos acotados y deduplicación en PostgreSQL. |
-| Facilitar la evaluación | Repositorio Git, instrucciones, evidencias, manual y guía de diapositivas; acceso del evaluador pendiente. |
+| Facilitar la evaluación | Repositorio Git, instrucciones, evidencias, manual y guía de diapositivas; acceso público mantenido por decisión del autor. |
 
 ## Qué significa «alta capacidad» en este proyecto
 
@@ -513,7 +513,7 @@ Los informes locales permanecen en results, ignorado por Git. Solo la evidencia 
 
 # 17. Publicación, CI y versión de entrega
 
-El repositorio pertenece a JrgPS y se llama tfm-pasarela-iot. El autor ha solicitado hacerlo privado; los permisos del evaluador se añadirán más adelante. Cuando era público se verificó un clon sin credenciales y la descarga de la presentación, cuya huella coincidía con el archivo local. Esa comprobación es histórica y no acredita acceso tras el cambio de visibilidad. La etiqueta v1.0.0 apunta al cierre 245b8340a3905e1fc631bfb9c2480896a6ad52ca.
+El repositorio pertenece a JrgPS y se llama tfm-pasarela-iot. El autor ha decidido mantenerlo público por ahora tras revisar el aviso de GitHub sobre Advanced Security. No se ha cambiado la visibilidad ni añadido colaboradores. Se verificaron un clon sin credenciales y la descarga de la presentación, cuya huella coincidía con el archivo local. Antes de entregar debe comprobarse el acceso a los enlaces definitivos. La etiqueta v1.0.0 apunta al cierre 245b8340a3905e1fc631bfb9c2480896a6ad52ca.
 
 ## Qué comprueba GitHub Actions
 
@@ -580,7 +580,7 @@ El conjunto preparado incluye README, especificación, decisiones técnicas, có
 
 Las fuentes del curso revisadas no fijaban una memoria académica de extensión concreta ni un número de diapositivas. El vídeo se explicaba como opcional y no figura expresamente en el PDF oficial; sin embargo, la auditoría del formulario actual encontró URL Vídeo con required=true. El autor ha decidido no grabarlo. La discrepancia debe aclararse con la escuela antes del envío, sin inventar una URL. El formulario incluye datos personales de matrícula y enlaces a repositorio, publicación, slides, vídeo y credenciales si existe login. Este proyecto no tiene login web: el aprovisionamiento genera credenciales de dispositivos en cada instalación.
 
-Antes de enviar, el autor debe completar su presentación, revisar la solución, conceder acceso al evaluador, aclarar la entrega sin vídeo y comprobar datos y enlaces. No hay vídeo grabado ni formulario enviado. Las explicaciones revisadas de E.1 admitían entregas tras el 23 de febrero de 2026 con posible demora. No se garantiza un plazo actual de evaluación.
+Antes de enviar, el autor debe completar su presentación, revisar la solución, comprobar el acceso del evaluador, aclarar la entrega sin vídeo y comprobar datos y enlaces. No hay vídeo grabado ni formulario enviado. Las explicaciones revisadas de E.1 admitían entregas tras el 23 de febrero de 2026 con posible demora. No se garantiza un plazo actual de evaluación.
 
 # 20. Referencia técnica y fuentes
 

@@ -4,7 +4,7 @@ Revisión: 15 de octubre de 2026. Proyecto: Pasarela IoT TCP escalable. Referenc
 
 ## Decisiones posteriores del autor
 
-Este informe conserva el estado observado durante la auditoría, antes de los cambios documentales siguientes. El autor preparará sus diapositivas personalmente con la nueva guía PDF y no tiene previsto grabar vídeo. Ha solicitado hacer privado el repositorio y posponer los permisos del evaluador. Se incorporan el manual PDF, su fuente y la guía a main después de v1.0.0. Las menciones a repositorio público, archivos locales o presentación terminada en la matriz describen el estado auditado, no el cierre actual. Para el estado vigente, consultar [materiales de entrega](README.md). La entrega sin vídeo debe aclararse con BigSchool por el campo obligatorio observado; no se ha contactado al centro ni enviado el formulario.
+Este informe conserva el estado observado durante la auditoría, antes de los cambios documentales siguientes. El autor preparará sus diapositivas personalmente con la nueva guía PDF y no tiene previsto grabar vídeo. Tras revisar el aviso de GitHub, ha decidido mantener el repositorio público por ahora; no se han añadido colaboradores. Se incorporan el manual PDF, su fuente y la guía a main después de v1.0.0. Las menciones a repositorio público, archivos locales o presentación terminada en la matriz describen el estado auditado, no el cierre actual. Para el estado vigente, consultar [materiales de entrega](README.md). La entrega sin vídeo debe aclararse con BigSchool por el campo obligatorio observado; no se ha contactado al centro ni enviado el formulario.
 
 ## Dictamen
 

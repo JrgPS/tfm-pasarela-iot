@@ -38,7 +38,7 @@ Texto sugerido para describir la publicación local: «Servicio backend TCP/TLS 
 
 El formulario del campus no se ha enviado. No se han inventado enlaces, credenciales de evaluador ni una grabación inexistente.
 
-El autor ha solicitado repositorio privado; los permisos del evaluador se añadirán más adelante. Antes de entregar deberá disponer de acceso al código y a los materiales. Los dos trabajos de [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191) terminaron correctamente: compilación y pruebas, y demo Docker con TCP/TLS real. La [evidencia de CI](../evidence/github-actions.json) identifica el commit comprobado. El trabajo Docker realiza su propio checkout y genera secretos nuevos en el runner. Cuando el repositorio era público se verificó un [clon sin credenciales](../evidence/public-clone.json). El clon limpio inicial con Docker conserva su informe por separado.
+El repositorio se mantiene público por decisión del autor. No se han añadido colaboradores. Antes de entregar debe comprobarse que el evaluador puede acceder al código y a los materiales. Los dos trabajos de [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191) terminaron correctamente: compilación y pruebas, y demo Docker con TCP/TLS real. La [evidencia de CI](../evidence/github-actions.json) identifica el commit comprobado. El trabajo Docker realiza su propio checkout y genera secretos nuevos en el runner. Cuando el repositorio era público se verificó un [clon sin credenciales](../evidence/public-clone.json). El clon limpio inicial con Docker conserva su informe por separado.
 
 ## Fuente editable de la presentación
 
