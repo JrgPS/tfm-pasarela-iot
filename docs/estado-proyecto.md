@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Actualizado el 15 de octubre de 2026 tras la validación local y en GitHub Actions. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio se mantiene público por decisión del autor, que preparará sus diapositivas con la guía PDF. No se han añadido colaboradores. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. Falta la presentación definitiva, la revisión final y el envío al campus.
+Estado documental actualizado el 18 de octubre de 2026; los ensayos técnicos y la validación de CI referenciados se realizaron el 15 de octubre. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio se mantiene público por decisión del autor, que ha autorizado publicar su presentación final de doce diapositivas. No se han añadido colaboradores. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. La presentación final está incorporada. Faltan la revisión y comprensión final del autor, aclarar la entrega sin vídeo y el envío al campus.
 
 ## Implementado
 
@@ -46,7 +46,7 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 ## Pendientes para la entrega
 
 1. Revisar los [enlaces de entrega](entrega/README.md). CI terminó correctamente y el clon sin credenciales fue comprobado cuando el repositorio era público; esa evidencia es histórica.
-2. Preparar la presentación final siguiendo la guía de [materiales de entrega](entrega/README.md). Aclarar con la escuela cómo entregar sin vídeo, por la discrepancia del formulario.
+2. Revisar y practicar la explicación con la presentación final de [materiales de entrega](entrega/README.md), ya incorporada. Aclarar con la escuela cómo entregar sin vídeo, por la discrepancia observada en el formulario.
 3. Facilitar al evaluador repositorio y presentación accesibles, y enviar el formulario del campus tras la revisión del autor. El perfil actual ofrece ejecución local reproducible.
 
 Si se decide añadir un despliegue remoto, revisar antes privilegios de base de datos, límites de autenticación y certificados. Las etiquetas de imágenes son mutables y conviene fijar digests para conservación a largo plazo. Las imágenes usadas en los ensayos y en el cierre están identificadas en los metadatos, sin afirmar que una descarga futura producirá exactamente los mismos binarios.

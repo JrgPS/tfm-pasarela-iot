@@ -1,0 +1,21 @@
+{
+  "publicationAuthorizedDate": "2026-10-18",
+  "file": "docs/entrega/Presentacion-TFM.pptx",
+  "sha256": "5f7263ec2b250c7f5ec10e5d8648e706e2a1293d2e337cdae5186597a6415aa4",
+  "sizeBytes": 18824942,
+  "slideCount": 12,
+  "imageSlides": true,
+  "correctedSlides": [
+    1,
+    4,
+    5,
+    11,
+    12
+  ],
+  "otherSevenImagesByteIdenticalToAuthorSource": true,
+  "allSlidesVisuallyReviewed": true,
+  "packageAndLayoutValidationPassed": true,
+  "nativePowerPointOpened": false,
+  "applicationCodeChanged": false,
+  "originalTagV100Unchanged": true
+}
