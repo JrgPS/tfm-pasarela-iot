@@ -8,19 +8,19 @@ El proyecto nace de la experiencia del autor desarrollando una pasarela de pagos
 
 La prioridad es una primera versión completa, explicable y entregable con rapidez. El autor trabaja con C++, C#, .NET y Git, dispone de una dedicación semanal variable y fijó un presupuesto máximo total de 100 EUR. No se han contratado servicios para el proyecto ni se requiere una API de IA de pago para ejecutarlo. Las suscripciones personales a ChatGPT y Gemini no forman parte de un coste operativo de la aplicación.
 
-El equipo disponible incluye un Synology DS920+ y un CHUWI LarkBox X con Intel N150, 16 GB de RAM, SSD de 512 GB y Proxmox. Las pruebas publicadas se realizaron en el PC con Docker Desktop, no en esos equipos. No se ha validado un despliegue en NAS, Proxmox ni cloud.
+El equipo disponible incluye un Synology DS920+ y un CHUWI LarkBox X con Intel N150, 16 GB de RAM, SSD de 512 GB y Proxmox. Los ensayos iniciales se realizaron en el PC con Docker Desktop. El 29 de octubre se instaló además una VM dedicada en el CHUWI, con Ubuntu 24.04.5, dos vCPU, 4 GiB de RAM y 40 GiB de disco. El servicio iot.xjps.es:7443 quedó verificado desde una conexión móvil externa. No se ha desplegado en el NAS ni contratado un servidor cloud.
 
 ## Estado de referencia de este manual
 
-La documentación describe la versión publicada v1.0.0, cuyo commit de cierre es 245b834. El código y la configuración de CI se comprobaron en el commit f6ef8b9; después se actualizaron enlaces y evidencias documentales. La fecha de corte es el 15 de octubre de 2026, con referencia de calendario Europe/Madrid. Los sellos de tiempo del protocolo y de las evidencias utilizan UTC cuando así lo indican.
+La fecha de corte de este manual es el 29 de octubre de 2026, con referencia de calendario Europe/Madrid. La etiqueta v1.0.0 conserva el cierre técnico original 245b834; los ensayos iniciales y CI corresponden al 15 de octubre y al commit f6ef8b9. La presentación final y la preparación del despliegue se incorporan después a main. La VM partió de 195c48d y recibió los archivos de despliegue actualizados, sin cambios de código C#. Los sellos de tiempo del protocolo y de las evidencias utilizan UTC cuando así lo indican.
 
-La versión incluye dos servicios replicables de aplicación, una base independiente, balanceador, aprovisionamiento, simulador, pruebas y presentación. Los dos trabajos de GitHub Actions finalizaron correctamente. El autor preparará personalmente las diapositivas definitivas a partir de la guía PDF. No tiene previsto grabar vídeo. Quedan la revisión final, la comprobación de acceso del evaluador y el envío al campus; debe aclararse que el formulario actual exige URL de vídeo aunque las explicaciones lo describían como opcional.
+La versión incluye dos servicios replicables de aplicación, una base independiente, balanceador, aprovisionamiento, simulador, pruebas y presentación final de doce diapositivas. El servicio está publicado mediante DNS de Cloudflare y redirección TCP del router hacia HAProxy en la VM. La prueba externa confirmó cinco operaciones desde datos móviles, sin errores. El autor no tiene previsto grabar vídeo. Quedan su revisión final, facilitar el paquete privado al evaluador y enviar el formulario; debe aclararse la discrepancia del campo URL Vídeo observado como obligatorio el 15 de octubre, aunque las explicaciones lo describían como opcional.
 
 Este manual consolida requisitos, implementación y resultados. Cuando la especificación inicial expresa una intención que la versión actual no cumple, prevalecen el código y las precisiones de este documento. No se incluyen claves, contraseñas ni información privada de un despliegue.
 
 # 2. Requisitos y alcance implementado
 
-| Necesidad del proyecto | Solución de la versión v1.0.0 |
+| Necesidad del proyecto | Solución implementada |
 |---|---|
 | TCP con conexión persistente | Sockets asíncronos, SslStream y una sesión por conexión. |
 | Dispositivos identificables | Fabricante, modelo y serie conservados como cadenas con ceros iniciales. |
@@ -51,7 +51,7 @@ La solución conserva tres componentes funcionales: entrada TCP, registro/operac
 
 <architecture/>
 
-La figura representa el perfil probado de dos gateways y dos registros. El mismo HAProxy dispone de una entrada TCP para dispositivos y otra HTTP interna para las peticiones del gateway. TLS termina en el gateway; el balanceador TCP transporta sus bytes. Solo se publica en el host la entrada 127.0.0.1:7443.
+La figura representa el perfil probado de dos gateways y dos registros. El mismo HAProxy dispone de una entrada TCP para dispositivos y otra HTTP interna para las peticiones del gateway. TLS termina en el gateway; el balanceador TCP transporta sus bytes. El perfil local publica 127.0.0.1:7443. La VM de evaluación publica el puerto 7443 en su dirección LAN y el router redirige únicamente ese puerto TCP desde Internet. PostgreSQL y la API interna no publican puertos del host.
 
 ## Responsabilidades y aislamiento
 
@@ -74,7 +74,7 @@ Iot.Protocol contiene formato, firma, FrameReader y contratos. Iot.Persistence c
 
 El ejemplo siguiente explica una suma aceptada. El dispositivo ya dispone de una identidad, una clave HMAC y un certificado público de confianza generados para la demo.
 
-1. El simulador abre TCP hacia proxy:7443 dentro de Docker. Desde el host, la entrada equivalente es localhost:7443. HAProxy asigna la nueva conexión a un gateway preparado.
+1. El simulador abre TCP hacia proxy:7443 dentro de Docker o hacia iot.xjps.es:7443 en el despliegue de evaluación. El perfil de desarrollo utiliza localhost:7443. HAProxy asigna la nueva conexión a un gateway preparado.
 2. El cliente y el gateway negocian TLS. El simulador comprueba el nombre y la huella SHA-256 del certificado esperado. El gateway registra la apertura por medio de la API interna.
 3. El cliente envía una petición 001 firmada. registry verifica el registro, el secreto, el estado activo y el resto de reglas. Vincula el identificador de conexión a la identidad autenticada.
 4. El servidor devuelve 000, el comercio asociado y READY, con HMAC. El cliente comprueba correlación y autenticidad.
@@ -276,7 +276,7 @@ Las claves de dispositivo de PostgreSQL se cifran con AES-GCM bajo una clave mae
 
 La API interna usa HTTP en la red privada del mismo host, autenticado por secreto de servicio; no está publicada en el host. Al distribuir servicios entre máquinas debe protegerse también ese transporte con TLS o una red cifrada. La red data se declara interna y conecta PostgreSQL con los componentes que lo necesitan.
 
-El perfil actual no constituye una certificación de seguridad de producción. Comparte el usuario de laboratorio iot para funciones de base de datos, no incorpora limitación global de autenticación ni un gestor externo de secretos. Antes de exponerlo remotamente deben revisarse privilegios mínimos, certificados, rotación y controles de red.
+El perfil actual no constituye una certificación de seguridad de producción. Comparte el usuario de laboratorio iot para funciones de base de datos, no incorpora limitación global de autenticación ni un gestor externo de secretos. El despliegue usa datos ficticios, secretos nuevos, una VM dedicada y únicamente el puerto TCP de la pasarela publicado. El cliente verifica certificado, nombre y HMAC. Privilegios mínimos de base, límites globales de autenticación, rotación y disponibilidad integral siguen siendo mejoras documentadas.
 
 # 11. Instalación y primera ejecución
 
@@ -530,9 +530,27 @@ El último commit de cierre modifica documentación y evidencia, sin cambios de 
 - Repositorio: https://github.com/JrgPS/tfm-pasarela-iot
 - Código v1.0.0: https://github.com/JrgPS/tfm-pasarela-iot/tree/v1.0.0
 - CI correcto: https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191
-- Materiales: https://github.com/JrgPS/tfm-pasarela-iot/tree/v1.0.0/docs/entrega
+- Materiales actuales: https://github.com/JrgPS/tfm-pasarela-iot/tree/main/docs/entrega
 
-La aplicación no dispone de URL pública de servicio. localhost:7443 es una entrada local TCP/TLS, no una web que el evaluador pueda abrir desde otro equipo. El acceso disponible es código descargable y ejecución reproducible con Docker.
+## Servicio publicado y acceso del evaluador
+
+El endpoint público es iot.xjps.es:7443, protocolo TCP/TLS. No es una página HTTP: se utiliza con el simulador. Cloudflare tiene un registro A en modo Solo DNS y el router redirige TCP 7443 hacia HAProxy. La VM tiene reserva DHCP; SSH utiliza clave, con contraseña y acceso directo de root desactivados. Docker y QEMU Guest Agent están activos. La IP pública puede cambiar: en ese caso debe actualizarse el registro A; no se ha instalado actualización DNS automática.
+
+La VM ejecuta HAProxy, dos Gateway, dos Registry y PostgreSQL, con volumen persistente y políticas de reinicio. Se aprovisionaron cien dispositivos ficticios. Las pruebas dentro de la VM confirmaron cincuenta sumas de diez dispositivos y mil sumas de cien dispositivos; no hubo fallos ni diferencias de totales. La ráfaga de cien duró 9,42 segundos y obtuvo p95 de 809,50 ms; no constituye una prueba sostenida ni una capacidad máxima.
+
+La prueba externa del 29 de octubre utilizó este PC conectado a datos móviles. Se verificó que su IP de salida era distinta de la conexión doméstica y se ejecutó el cliente sin override DNS local. Confirmó cinco operaciones, cero fallos, cero reintentos y totales correctos; p95 de 138,16 ms. Las evidencias originales están en docs/evidence/proxmox-external.json y proxmox-external-network.json. Esta comprobación acredita el acceso desde otra red en ese momento, no un SLA futuro.
+
+El evaluador necesita Docker con contenedores Linux, el repositorio y un paquete privado con una identidad ficticia en evaluation-client/devices.json y el certificado público en evaluation-client/server.cer. No necesita claves del servidor, acceso SSH ni credenciales de PostgreSQL. No se publica el paquete privado en Git. Se facilita al evaluador por el canal privado acordado por el autor.
+
+En PowerShell, desde la raíz del repositorio:
+
+```powershell
+$env:IOT_REMOTE_HOST = 'iot.xjps.es'
+$env:IOT_REMOTE_PORT = '7443'
+docker compose -f compose.client.yaml run --rm --build simulator
+```
+
+Este Compose levanta únicamente el cliente y ejecuta cinco sumas; el resultado esperado es confirmedOperations=5, failedDevices=0 y errors vacío. La guía completa de acceso está en https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/acceso-evaluador.md .
 
 # 18. Decisiones técnicas y uso de IA
 
@@ -576,11 +594,11 @@ Otras mejoras son un journal de auditoría con reenvío, rotación de claves y c
 
 ## Materiales y pasos de entrega
 
-El conjunto preparado incluye README, especificación, decisiones técnicas, código, Compose, scripts, evidencias y una presentación editable de diez diapositivas como borrador. El autor realizará la versión definitiva siguiendo la guía PDF de contenido, que propone doce diapositivas y permite combinarlas. El guion propone una demostración de seis a ocho minutos y preguntas de defensa. Este PDF añade una explicación consolidada y no reemplaza el código ni las evidencias originales.
+El conjunto preparado incluye README, especificación, decisiones técnicas, código, Compose, scripts, evidencias, despliegue público y la presentación final del autor de doce diapositivas. Las diapositivas son imágenes y están en main; la etiqueta v1.0.0 conserva el borrador anterior. El guion sirve para practicar una demostración y comprender la solución. Las fuentes revisadas no establecen una defensa oral en directo obligatoria. Este PDF añade una explicación consolidada y no reemplaza el código ni las evidencias originales.
 
 Las fuentes del curso revisadas no fijaban una memoria académica de extensión concreta ni un número de diapositivas. El vídeo se explicaba como opcional y no figura expresamente en el PDF oficial; sin embargo, la auditoría del formulario actual encontró URL Vídeo con required=true. El autor ha decidido no grabarlo. La discrepancia debe aclararse con la escuela antes del envío, sin inventar una URL. El formulario incluye datos personales de matrícula y enlaces a repositorio, publicación, slides, vídeo y credenciales si existe login. Este proyecto no tiene login web: el aprovisionamiento genera credenciales de dispositivos en cada instalación.
 
-Antes de enviar, el autor debe completar su presentación, revisar la solución, comprobar el acceso del evaluador, aclarar la entrega sin vídeo y comprobar datos y enlaces. No hay vídeo grabado ni formulario enviado. Las explicaciones revisadas de E.1 admitían entregas tras el 23 de febrero de 2026 con posible demora. No se garantiza un plazo actual de evaluación.
+Antes de enviar, el autor debe revisar la solución, facilitar privadamente el paquete de prueba al evaluador, aclarar la entrega sin vídeo y comprobar datos y enlaces. La presentación está terminada y el acceso externo está probado. No hay vídeo grabado ni formulario enviado. Las explicaciones revisadas de E.1 admitían entregas tras el 23 de febrero de 2026 con posible demora. No se garantiza un plazo actual de evaluación.
 
 # 20. Referencia técnica y fuentes
 
@@ -612,6 +630,8 @@ registry limita el cuerpo HTTP a 16 KiB y revalida el tamaño de frame y formato
 | DB_HOST, DB_PORT, DB_NAME, DB_USER | Conexión PostgreSQL, con contraseña leída de archivo. |
 | ASPNETCORE_URLS | Escucha HTTP interna de cada servicio. |
 | TLS_DNS_NAME | Nombre DNS adicional al crear un certificado nuevo. |
+| IOT_BIND_ADDRESS | Dirección del host donde Compose publica HAProxy; localhost por defecto, IP LAN en la VM. |
+| IOT_PUBLIC_PORT | Puerto publicado por Compose; 7443 por defecto. |
 | IOT_TEST_CONNECTION | Conexión exclusiva de las pruebas de persistencia. |
 | IOT_NETWORK_TESTS | Habilita explícitamente las pruebas TCP/TLS de la demo. |
 
@@ -635,11 +655,12 @@ La información se ha consolidado a partir de los archivos de la versión v1.0.0
 - docs/validacion-docker.md, docs/validacion-fallos.md y docs/pruebas-reproducibles.md: metodología y resultados.
 - docs/evidence/: JSON de carga, recuperación, recursos, copia, clon limpio y CI.
 - docs/adr/ y docs/ai-development.md: decisiones y uso de IA.
-- docs/entrega/guion-demostracion.md: preparación de la demostración y defensa.
+- docs/entrega/guion-demostracion.md: práctica de una demostración y explicación del proyecto.
+- docs/validacion-proxmox.md y docs/acceso-evaluador.md: instalación propia, pruebas LAN/externas e instrucciones de conexión.
 
 Consulta versionada: https://github.com/JrgPS/tfm-pasarela-iot/tree/v1.0.0
 
-Presentación: https://github.com/JrgPS/tfm-pasarela-iot/blob/v1.0.0/docs/entrega/Presentacion-TFM.pptx
+Presentación final: https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/entrega/Presentacion-TFM.pptx
 
 Evidencia de CI: https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191
 

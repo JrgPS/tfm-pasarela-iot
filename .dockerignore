@@ -8,3 +8,6 @@ results
 Doc
 TestResults
 **/TestResults
+evaluation-client
+.env.evaluation
+output

@@ -9,7 +9,7 @@ Proyecto: **Pasarela IoT TCP escalable**, Máster en Desarrollo con IA E.1.
 - [Presentación final del autor](Presentacion-TFM.pptx): doce diapositivas; versión corregida y autorizada para publicación el 18 de octubre de 2026. Las diapositivas son imágenes, no texto editable.
 - [Evidencia del archivo final](../evidence/presentacion-final.json): huella SHA-256 y comprobaciones de integridad.
 - [Auditoría de requisitos](Auditoria-requisitos.md): revisión de evidencias y condiciones de entrega.
-- [Guion de demostración](guion-demostracion.md): comandos, relato y preguntas para preparar la defensa.
+- [Guion de demostración](guion-demostracion.md): comandos, relato y preguntas para practicar la explicación del proyecto; no implica una defensa oral obligatoria.
 - [README principal](../../README.md): instalación y uso.
 - [Especificación](../../Doc/Especificacion-TFM-Pasarela-IoT.md): requisitos completos.
 - [Validación Docker](../validacion-docker.md) y [fallos de dependencia y sobrecarga](../validacion-fallos.md): resultados con evidencia.
@@ -22,19 +22,19 @@ Proyecto: **Pasarela IoT TCP escalable**, Máster en Desarrollo con IA E.1.
 |---|---|
 | Nombre, apellidos y email | Los datos de matrícula del alumno. |
 | URL GitHub | https://github.com/JrgPS/tfm-pasarela-iot |
-| URL despliegue | No hay despliegue público. Servicio TCP/TLS ejecutable localmente con Docker. |
+| URL despliegue / instrucciones de acceso | https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/acceso-evaluador.md — endpoint operativo TCP/TLS: iot.xjps.es:7443, verificado desde datos móviles. |
 | URL Slides | https://github.com/JrgPS/tfm-pasarela-iot/blob/main/docs/entrega/Presentacion-TFM.pptx |
-| URL Vídeo | El autor no tiene previsto grabarlo. El formulario actual lo exige; aclarar con BigSchool la discrepancia con las explicaciones que lo describían como opcional. |
-| Usuario y contraseña de prueba | No aplica: no hay login web. El aprovisionamiento genera credenciales de dispositivos ficticios en cada instalación. |
+| URL Vídeo | El autor no tiene previsto grabarlo. La revisión del 15 de octubre observó un campo obligatorio; aclarar con BigSchool la discrepancia con las explicaciones que lo describían como opcional. |
+| Credenciales de prueba | Identidad ficticia y certificado público en paquete privado facilitado por el autor. No hay login web ni que dar acceso administrativo al servidor. |
 
-Texto sugerido para describir la publicación local: «Servicio backend TCP/TLS sin interfaz web. Incluye Docker Compose, simulador, instrucciones reproducibles y evidencias de pruebas. Cada instalación genera sus propios secretos y dispositivos de demostración».
+Texto sugerido para describir el despliegue: «Servicio backend TCP/TLS en iot.xjps.es:7443, verificado desde una conexión móvil externa. La guía enlazada explica cómo utilizar el simulador con el paquete privado de prueba facilitado al evaluador».
 
 ## Antes de enviar
 
 1. Comprobar que el repositorio y la presentación son accesibles al evaluador.
 2. Consultar la [ejecución correcta de GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191).
 3. Revisar personalmente la solución y practicar su explicación con la presentación final ya incorporada.
-4. Aclarar con BigSchool cómo entregar sin vídeo: el campo actual URL Vídeo es obligatorio. No usar enlaces ficticios.
+4. Aclarar con BigSchool cómo entregar sin vídeo si el campo URL Vídeo sigue siendo obligatorio, como en la revisión del 15 de octubre. No usar enlaces ficticios.
 5. Revisar los campos y enviar personalmente el formulario del campus.
 
 El formulario del campus no se ha enviado. No se han inventado enlaces, credenciales de evaluador ni una grabación inexistente.

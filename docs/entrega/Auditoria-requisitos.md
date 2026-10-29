@@ -4,6 +4,8 @@ Revisión: 15 de octubre de 2026. Proyecto: Pasarela IoT TCP escalable. Referenc
 
 ## Decisiones posteriores del autor
 
+Actualización del 29 de octubre de 2026: la [presentación final de doce diapositivas](Presentacion-TFM.pptx), el manual actualizado y el [servicio publicado, probado desde datos móviles](../validacion-proxmox.md) están preparados. La [guía de acceso](../acceso-evaluador.md) contiene el endpoint operativo. La matriz que sigue conserva la auditoría histórica del 15 de octubre y no sustituye el [estado vigente](../estado-proyecto.md).
+
 Este informe conserva el estado observado durante la auditoría, antes de los cambios documentales siguientes. El autor preparará sus diapositivas personalmente con la nueva guía PDF y no tiene previsto grabar vídeo. Tras revisar el aviso de GitHub, ha decidido mantener el repositorio público por ahora; no se han añadido colaboradores. Se incorporan el manual PDF, su fuente y la guía a main después de v1.0.0. Las menciones a repositorio público, archivos locales o presentación terminada en la matriz describen el estado auditado, no el cierre actual. Para el estado vigente, consultar [materiales de entrega](README.md). La entrega sin vídeo debe aclararse con BigSchool por el campo obligatorio observado; no se ha contactado al centro ni enviado el formulario.
 
 ## Dictamen

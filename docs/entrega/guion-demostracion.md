@@ -1,6 +1,6 @@
-# Guion de demostración y defensa
+# Guion para explicar y demostrar el proyecto
 
-Duración orientativa: 6–8 minutos. Es un guion para el autor, no acredita una grabación ya realizada. Grabar escritorio y voz con una herramienta disponible en el equipo y publicar el vídeo como enlace accesible al evaluador si se decide incluirlo.
+Duración orientativa: 6–8 minutos. Es una práctica opcional para el autor; las fuentes revisadas no establecen una defensa oral en directo obligatoria. El autor no tiene previsto grabar vídeo. El servicio publicado se prueba siguiendo [acceso del evaluador](../acceso-evaluador.md); los comandos siguientes describen la demo local. No se ha realizado una grabación con este guion.
 
 ## Preparación
 

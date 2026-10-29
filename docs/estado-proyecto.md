@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Estado documental actualizado el 18 de octubre de 2026; los ensayos técnicos y la validación de CI referenciados se realizaron el 15 de octubre. El MVP funciona en contenedores Linux y tiene evidencia de pruebas funcionales, carga y recuperación. El repositorio se mantiene público por decisión del autor, que ha autorizado publicar su presentación final de doce diapositivas. No se han añadido colaboradores. No prevé grabar vídeo; la discrepancia con el campo obligatorio del formulario debe aclararse antes de enviar. La presentación final está incorporada. Faltan la revisión y comprensión final del autor, aclarar la entrega sin vídeo y el envío al campus.
+Estado documental actualizado el 29 de octubre de 2026. El servicio `iot.xjps.es:7443` está [publicado y verificado desde datos móviles](validacion-proxmox.md), con TLS, autenticación y totales correctos. La VM de Proxmox ejecuta dos Gateway, dos Registry, HAProxy y PostgreSQL. Los ensayos iniciales y CI referenciados corresponden al 15 de octubre. El repositorio se mantiene público y la presentación final de doce diapositivas está incorporada. No se han añadido colaboradores. Faltan la revisión y comprensión final del autor, facilitar privadamente el paquete al evaluador, aclarar la discrepancia del vídeo observada en el formulario el 15 de octubre y enviar la entrega al campus.
 
 ## Implementado
 
@@ -48,16 +48,17 @@ El [informe con evidencia](validacion-docker.md) contiene las métricas exactas.
 1. Revisar los [enlaces de entrega](entrega/README.md). CI terminó correctamente y el clon sin credenciales fue comprobado cuando el repositorio era público; esa evidencia es histórica.
 2. Revisar y practicar la explicación con la presentación final de [materiales de entrega](entrega/README.md), ya incorporada. Aclarar con la escuela cómo entregar sin vídeo, por la discrepancia observada en el formulario.
 3. Facilitar al evaluador repositorio y presentación accesibles, y enviar el formulario del campus tras la revisión del autor. El perfil actual ofrece ejecución local reproducible.
+4. Facilitar privadamente la identidad ficticia y el certificado público al evaluador, con la [guía de acceso](acceso-evaluador.md). La publicación y la prueba desde otra red ya están realizadas.
 
-Si se decide añadir un despliegue remoto, revisar antes privilegios de base de datos, límites de autenticación y certificados. Las etiquetas de imágenes son mutables y conviene fijar digests para conservación a largo plazo. Las imágenes usadas en los ensayos y en el cierre están identificadas en los metadatos, sin afirmar que una descarga futura producirá exactamente los mismos binarios.
+La publicación remota y el acceso externo están comprobados en la [validación Proxmox](validacion-proxmox.md). Mantener disponible la instalación durante la evaluación y actualizar DNS si cambia la IP pública. Las etiquetas de imágenes son mutables y conviene fijar digests para conservación a largo plazo; los metadatos históricos no afirman que una descarga futura produzca exactamente los mismos binarios.
 
 Mejoras posteriores al mínimo: mezclas configurables de escenarios inválidos en el simulador, métricas de todas las acciones, escalado por calendario y un journal duradero para auditoría durante averías. En rechazos de transporte la auditoría conserva la causa; no se garantiza todavía una muestra de los bytes rechazados ni reenvío de toda auditoría tras caída de PostgreSQL.
 
 ## Entorno y confidencialidad
 
-Los servicios quedan disponibles únicamente en `localhost:7443`. La API interna y PostgreSQL no publican sus puertos en el host. Los contenedores auxiliares de las pruebas se retiran y no se elimina el volumen de datos.
+El perfil predeterminado de desarrollo publica únicamente `localhost:7443`. En la VM de evaluación se ha configurado HAProxy en su dirección LAN, puerto TCP 7443. La API interna y PostgreSQL no publican sus puertos en el host. Los contenedores auxiliares de las pruebas se retiran y no se elimina el volumen de datos.
 
-`.tools/`, `secrets/`, compilaciones, logs y resultados de ejecución están ignorados por Git. Solo se selecciona evidencia sin claves bajo `docs/evidence/`. El PDF original del campus se conserva localmente. No se han contratado servicios, consumido APIs de IA desde la aplicación ni accedido al NAS o Proxmox.
+`.tools/`, `secrets/`, `evaluation-client/`, compilaciones, logs y resultados de ejecución están ignorados por Git. Solo se selecciona evidencia sin claves bajo `docs/evidence/`. El PDF original del campus se conserva localmente. No se han contratado servicios ni consumido APIs de IA desde la aplicación. Se ha instalado una VM dedicada en Proxmox; no se ha accedido al NAS.
 
 ## Cierre técnico adicional
 

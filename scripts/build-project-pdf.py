@@ -137,7 +137,7 @@ def page(canvas, doc):
         canvas.setFillColor(colors.white);canvas.setFont('Strong',11)
         canvas.drawString(LEFT,166,'Máster en Desarrollo con IA E.1')
         canvas.setFont('Body',10.5)
-        canvas.drawString(LEFT,143,'Versión de referencia v1.0.0  -  15 de octubre de 2026')
+        canvas.drawString(LEFT,143,'Edición con despliegue público  -  29 de octubre de 2026')
         canvas.setFillColor(colors.HexColor('#C4D6E1'));canvas.setFont('Body',9)
         canvas.drawString(LEFT,86,'Proyecto individual con dispositivos y operaciones ficticios.')
         canvas.drawString(LEFT,70,'Documento consolidado a partir del código y la evidencia del repositorio.')
@@ -145,7 +145,7 @@ def page(canvas, doc):
         canvas.setFillColor(NAVY);canvas.setFont('Strong',8.5)
         canvas.drawString(LEFT,HEIGHT-35,'PASARELA IoT TCP  /  MANUAL DEL PROYECTO')
         canvas.setFillColor(MUTED);canvas.setFont('Body',8)
-        canvas.drawRightString(WIDTH-RIGHT,HEIGHT-35,'v1.0.0  ·  15/10/2026')
+        canvas.drawRightString(WIDTH-RIGHT,HEIGHT-35,'Despliegue público  ·  29/10/2026')
         canvas.setStrokeColor(colors.HexColor('#CCDADF'));canvas.setLineWidth(.5)
         canvas.line(LEFT,HEIGHT-45,WIDTH-RIGHT,HEIGHT-45)
         canvas.line(LEFT,35,WIDTH-RIGHT,35)
@@ -239,7 +239,7 @@ while i<len(lines):
 
 doc=ManualDoc(str(OUTPUT),pagesize=A4,leftMargin=LEFT,rightMargin=RIGHT,
               topMargin=TOP,bottomMargin=BOTTOM,title='Pasarela IoT TCP escalable - Manual completo',
-              author='Proyecto TFM BigSchool',subject='Arquitectura, protocolo, uso y validación de v1.0.0')
+              author='Proyecto TFM BigSchool',subject='Arquitectura, protocolo y despliegue público verificado el 29/10/2026')
 frame=Frame(LEFT,BOTTOM,CW,HEIGHT-TOP-BOTTOM,leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)
 doc.addPageTemplates(PageTemplate(id='Manual',frames=[frame],onPage=page))
 doc.multiBuild(story)

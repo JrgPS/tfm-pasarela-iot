@@ -72,7 +72,7 @@ services:
   proxy:
     image: haproxy:3.0-alpine
     ports:
-      - "127.0.0.1:7443:7443"
+      - "${IOT_BIND_ADDRESS:-127.0.0.1}:${IOT_PUBLIC_PORT:-7443}:7443"
     volumes:
       - ./deploy/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks: [app]
@@ -88,6 +88,7 @@ services:
     environment:
       IOT_SECRETS: /work/secrets
       DB_HOST: db
+      TLS_DNS_NAME: ${TLS_DNS_NAME:-}
     volumes:
       - ./secrets:/work/secrets
     networks: [data]

@@ -14,3 +14,5 @@ results/*
 *.key
 Doc/*.pdf
 output/
+.env.evaluation
+evaluation-client/

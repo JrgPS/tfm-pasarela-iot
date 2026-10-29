@@ -1,0 +1,9 @@
+{
+  "verifiedUtc": "2026-10-29T17:21:42.8482512Z",
+  "network": "mobile_hotspot_confirmed_by_user",
+  "outboundIPv4DifferentFromHome": true,
+  "sourceIPAddressPublished": false,
+  "sourceCheck": "https://www.cloudflare.com/cdn-cgi/trace",
+  "target": "iot.xjps.es:7443",
+  "lanDnsOverrideUsed": false
+}

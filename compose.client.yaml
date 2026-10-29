@@ -1,0 +1,15 @@
+# Standalone evaluator client: starts only the simulator, with no local server.
+name: iot-tfm-client
+services:
+  simulator:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      args: { PROJECT: Iot.Simulator }
+    environment:
+      IOT_SECRETS: /run/client
+    volumes:
+      - ./evaluation-client/devices.json:/run/client/devices.json:ro
+      - ./evaluation-client/server.cer:/run/client/server.cer:ro
+      - ./results:/app/results
+    command: [--host, "${IOT_REMOTE_HOST:?Set IOT_REMOTE_HOST to the remote server hostname}", --port, "${IOT_REMOTE_PORT:-7443}", --devices, "1", --operations, "5"]

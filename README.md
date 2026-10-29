@@ -2,9 +2,11 @@
 
 Proyecto del Máster en Desarrollo con IA E.1. Recibe dispositivos mediante conexiones TCP persistentes con TLS, valida su identidad mediante HMAC y PostgreSQL, ejecuta sumas exactas y consulta totales. Incluye un simulador de dispositivos y configuración de réplicas con Docker Compose.
 
-**Estado: MVP validado localmente y en GitHub Actions, con manual y presentación final de doce diapositivas publicados.** Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md). Los comandos de validación están en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
+**Servicio publicado y comprobado desde una red móvil externa: `iot.xjps.es:7443` (TCP/TLS).** [Guía para el evaluador](docs/acceso-evaluador.md). Incluye manual y presentación final de doce diapositivas. Los resultados comprobados y las limitaciones están en [Estado del proyecto](docs/estado-proyecto.md); los comandos, en [Pruebas reproducibles](docs/pruebas-reproducibles.md).
 
 [Repositorio](https://github.com/JrgPS/tfm-pasarela-iot) · [Materiales de entrega](docs/entrega/README.md) · [GitHub Actions](https://github.com/JrgPS/tfm-pasarela-iot/actions)
+
+El backend está [instalado y probado en una VM de Proxmox](docs/validacion-proxmox.md), con dos Gateway y dos Registry. La prueba externa del 29 de octubre de 2026 confirmó cinco operaciones con TLS, autenticación y totales correctos. La [guía de despliegue](docs/despliegue-evaluacion.md) describe DNS y acceso TCP/TLS; el [cliente de evaluación](docs/acceso-evaluador.md) utiliza una identidad ficticia facilitada privadamente por el autor.
 
 ## Problema y alcance
 
@@ -151,4 +153,4 @@ Cada línea ASCII termina en LF y está limitada a 4096 bytes. Un `request_id` �
 
 Los [materiales de entrega](docs/entrega/README.md) incluyen el [manual completo en PDF](docs/entrega/Manual-completo-Pasarela-IoT-TFM.pdf), la [guía de diapositivas](docs/entrega/Guia-contenido-diapositivas-TFM.pdf), la [presentación final del autor](docs/entrega/Presentacion-TFM.pptx) y el guion de demostración. La presentación final incorpora las correcciones de sus imágenes y se publica por autorización del autor el 18 de octubre de 2026. La [validación de fallos](docs/validacion-fallos.md) documenta recuperación de PostgreSQL y sobrecarga. [Ambos trabajos de CI terminaron correctamente](https://github.com/JrgPS/tfm-pasarela-iot/actions/runs/38775260191).
 
-El autor ha decidido mantener el repositorio público por ahora; no se han añadido colaboradores. No tiene previsto grabar vídeo; antes del envío debe aclararse con BigSchool que el formulario exige su URL aunque las explicaciones lo describan como opcional. Pendientes: revisión y comprensión final del autor, aclaración de la entrega sin vídeo, comprobación de acceso y envío al campus. No hay URL pública de despliegue.
+El autor ha decidido mantener el repositorio público por ahora; no se han añadido colaboradores. No tiene previsto grabar vídeo; debe aclararse la discrepancia del campo obligatorio observado el 15 de octubre. Pendientes: revisión y comprensión final del autor, facilitar privadamente el paquete al evaluador, aclarar la entrega sin vídeo y enviar el formulario. El servicio TCP/TLS publicado y sus instrucciones están en la [guía de acceso](docs/acceso-evaluador.md).
